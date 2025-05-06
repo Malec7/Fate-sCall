@@ -75,12 +75,6 @@ function UpdateMatchUI(gameState) {
         }
     });
 
-    //When Game Over go back to the main menu 
-    if (gameState.game_state === 1) {
-        alert("Game over! Returning to main menu!");
-        window.location.href = "/mainMenu.html"; 
-        return;
-    }
 
     // Display whose turn it is
     console.log(`Current Turn: ${gameState.current_turn}`);
