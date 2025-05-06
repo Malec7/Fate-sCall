@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FATE'S CALL</title>
+    <link rel="stylesheet" type="text/css" href="./css/mainMenu.css">
+    <script src="./js/mainMenu.js"></script>
+</head>
+<body>
+
+<h1>FATE'S CALL</h1>
+
+<div class="container">
+  <div class="left-side">
+    <div id="username">username</div>
+    <div id="points">points</div>
+    <div id="history">match history</div><br><br>
+    <div class="square-group">
+      <div class="row">
+        <div id="sqr1" class="square"></div>
+      </div>
+      <div class="row">
+        <div id="bigsqr" class="square"></div>
+        <div id="sqr2" class="square"></div>
+        <div id="sqr3" class="square"></div>
+      </div>
+      <div class="row">
+        <div id="sqr4" class="square"></div>
+      </div>
+    </div>
+  </div>
+  <div class="right-side">
+    <button id="btn1" onclick="SearchMatch()" style="display:none">Search Match</button>
+    <div id="searchingMatch" style="display:none">Waiting for a match...</div>
+    <button id="btn3" onclick="QuitSearch()" style="display:none">Quit Search</button>
+    <button id="btn2" onclick="TeamSelectPage()">Select Party</button>
+  </div>
+</div>
+  <script>
+      CheckMatchState()
+      setInterval(CheckMatchState, 3000)
+  </script>
+</body>
+</html>

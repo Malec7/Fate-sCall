@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Character Select</title>
+    <link rel="stylesheet" type="text/css" href="./css/teamSelect.css">
+    <script src="./js/teamSelect.js"></script>
+</head>
+<body>
+
+    <h1>Team Selection</h1>
+
+<div class="container">
+  <div class="left-side">
+    <div id="username">username</div>
+    <div id="points">points</div>
+    <div id="history">match history</div>
+    <div class="square-group2">
+      <div class="row2">
+        <!-- <div id="sqr16" class="square2"></div> -->
+        <input type="text" id="sqr16" class="square2">
+      </div>
+      <div class="row2">
+        <!-- <div id="bigsqr" class="square2"></div>
+        <div id="sqr17" class="square2"></div>
+        <div id="sqr18" class="square2"></div> -->
+        <input type="text" id="bigsqr" class="square2">
+        <input type="text" id="sqr17" class="square2">
+        <input type="text" id="sqr18" class="square2">
+      </div>
+      <div class="row">
+        <!-- <div id="sqr19" class="square2"></div> -->
+        <input type="text" id="sqr19" class="square2">
+      </div>
+    </div>
+  </div>
+  <div class="right-side">
+    <div class="row">
+      <div id="sqr1" class="square"></div>
+      <div id="sqr2" class="square"></div>
+      <div id="sqr3" class="square"></div>
+      <div id="sqr4" class="square"></div>
+    </div>
+    <div class="row">
+      <div id="sqr5" class="square"></div>
+      <div id="sqr6" class="square"></div>
+      <div id="sqr7" class="square"></div>
+      <div id="sqr8" class="square"></div>
+      <div id="sqr9" class="square"></div>
+    </div>
+    <div class="row">
+      <div id="sqr10" class="square"></div>
+      <div id="sqr11" class="square"></div>
+      <div id="sqr12" class="square"></div>
+    </div>
+    <div class="row">
+      <div id="sqr13" class="square"></div>
+      <div id="sqr14" class="square"></div>
+      <div id="sqr15" class="square"></div>
+    </div>
+    <button id="btn" onclick="ConfirmTeam()">Confirm Team</button>
+  </div>
+</div>
+
+<script>
+  GetTeamState()
+  setInterval(GetMatchState, 3000)
+</script>
+</body>
+</html>

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Log In</title>
+    <script src="./js/fun.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: #282c34;
+            color: #f1f1f1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .form-container {
+            background: #333;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px #0005;
+        }
+        input[type="text"], input[type="password"] {
+            width: 100%;
+            padding: 8px;
+            margin: 8px 0;
+            border-radius: 6px;
+            border: none;
+        }
+        input[type="submit"] {
+            background-color: #1f72c0;
+            color: white;
+            padding: 10px;
+            width: 100%;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+        input[type="submit"]:hover {
+            background-color: #218838;
+        }
+        #message {
+            margin-top: 10px;
+            color: #ffc107;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h2>Login</h2>
+        Username: <input type="text" id="username" name="username"><br/>
+        Password: <input type="password" id="password" name="password"><br/>
+        <input type="submit" value="Log In" onclick="makeRequest()">
+        <div id="message"></div>
+    </div>
+</body>
+</html>

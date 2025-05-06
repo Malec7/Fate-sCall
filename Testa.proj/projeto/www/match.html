@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Match</title>
+    <link rel="stylesheet" type="text/css" href="./css/match.css">
+    <script src="./js/match.js"></script>
+</head>
+<body>
+  <style>
+    
+  </style>
+  
+  <div id="team1" class="container">
+    <div class="square-group">
+      <div id="player1" class="player-name">Player 1:</div>
+      <div class="row">
+        <div id="sqr1" class="square" onclick=""></div>
+      </div>
+      <div class="row">
+        <div id="sqr2" class="square" onclick=""></div>
+        <div id="sqr3" class="square" onclick=""></div>
+      </div>
+      <div class="row">
+        <div id="sqr4" class="square" onclick=""></div>
+      </div>
+    </div>
+  
+    <div id="turnIndicator">
+      <div id="player1color">Player 1 Turn: Blue</div>
+      <div id="player2color">Player 2 Turn: Red</div>
+  </div>
+
+    <div id="team2" class="square-group">
+      <div id="player2" class="player-name">Player 2:</div> <!-- Player 2 Name -->
+      <div class="row">
+        <div id="sqr5" class="square" onclick=""></div>
+      </div>
+      <div class="row">
+        <div id="sqr6" class="square" onclick=""></div>
+        <div id="sqr7"class="square" onclick=""></div>
+      </div>
+      <div class="row">
+        <div id="sqr8" class="square" onclick=""></div>
+      </div>
+    </div>
+  </div>
+  <div id="attackers">
+
+  </div>
+  <button onclick="AldrabrarIstoTudo()"></button>
+    
+<script>
+    GetMatchState()
+    setInterval(GetMatchState, 3000)
+</script>
+</body>
+</html>
