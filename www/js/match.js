@@ -165,9 +165,6 @@ function SendAttack(){
                 var data = JSON.parse(this.responseText);
                 console.log(data);
               
-                if (data.message === "Game Over") {
-                    window.location.href = "/mainMenu.html";
-                }
             }
         };
 

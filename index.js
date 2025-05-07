@@ -142,7 +142,7 @@ app.get("/checkMatch", (req, res) => {
     }
 
     //check if any match exists
-    connection.query("SELECT * FROM game_state WHERE game_state = 0 AND (game_ply1_id = ? OR game_ply2_id = ?)", [req.session.playerID, req.session.playerID],
+    connection.query("SELECT * FROM game_state WHERE game_ply1_id = ? OR game_ply2_id = ?", [req.session.playerID, req.session.playerID],
     function(err, rows, fields){
         if(err){
             res.status(500).json({"message": err});
@@ -311,22 +311,7 @@ app.get("/getTeamState", (req, res) => {
 });
 
 app.put("/confirmTeam", (req, res) => {
-    // var tank = req.body.tank;
-    // if (!tank) tank = undefined;
-
-    // var damage1 = req.body.damage1;
-    // if (!damage1) damage1 = undefined;
-
-    // var damage2 = req.body.damage2;
-    // if (!damage2) damage2 = undefined;
-
-    // var support = req.body.support;
-    // if (!support) support = undefined;
-
-    // var blessing = req.body.blessing;
-    // if (!blessing) blessing = undefined;
-
-    // Check if a team already exists for the user.
+    
     connection.query("SELECT * FROM player_unit WHERE player_id = ?", [req.session.playerID], function (err, rows, fields) {
         if (err) {
             return res.status(500).json({ message: err.message });
@@ -604,12 +589,12 @@ app.put("/attack", (req, res) => {
                     }
 
                     if (attacker.unit_id == 1) {
-                        console.log(`🔁 Ability triggered: Unit ${attacker.player_unit_id} gains 5 HP`);
+                        console.log(` Ability triggered: Unit ${attacker.player_unit_id} gains 5 HP`);
                         IncreaseHP(attacker.player_unit_id, 5);
                     }
 
                     else if (attacker.unit_id == 11) {
-                        console.log(`🔥 Ability triggered: Unit ${attacker.player_unit_id} loses 2 HP and gains +2 ATK`);
+                        console.log(` Ability triggered: Unit ${attacker.player_unit_id} loses 2 HP and gains +2 ATK`);
                         ApplyRecklessBuff(attacker.player_unit_id, 2);
                    }
     
@@ -648,41 +633,13 @@ app.put("/attack", (req, res) => {
     }
 
     function EndTurn(){
-        console.log("-------------------------------- Ending turn for player " + req.session.playerID + " ---------------------------------");
         connection.query("UPDATE game_state SET game_turn = CASE WHEN game_turn = 1 THEN 2 ELSE 1 END WHERE game_id = ?", [req.session.matchID], (err) => {
             if (err) {
                 return res.status(500).json({ message: err });
             }
-
-            // Check if opponent has no units left
-            const opponentID = player1ID === req.session.playerID ? player2ID : player1ID;
-            console.log("--> Opponent ID: " + opponentID);
-
-            connection.query("SELECT COUNT(*) AS DeadUnits FROM player_unit WHERE player_id = ? AND curr_unit_hp <= 0", [opponentID],
-                function (err, rows, fields) {
-                    if (err) return res.status(500).json({ message: err });
-
-                    if (rows[0].DeadUnits === 4) {
-                        // All units of the player are dead
-                        console.log("--> Player " + opponentID + " has no units left.");
-                        connection.query("UPDATE game_state SET game_state = 1, game_winner = ?, game_loser = ?", [req.session.playerID, opponentID],
-                            function (err, rows, fields) {
-                                if (err) return res.status(500).json({ message: err });
-                                res.json({
-                                    message: "Game Over",
-                                    winner: req.session.playerID,
-                                    loser: opponentID
-                                });
-                            })
-                    }else{
-                        console.log("--> Turn ended successfully for player " + req.session.playerID);
-                        res.json({
-                            message: "Turn ended successfully."
-                        })
-                    }
-                }
-            )
-
+            res.json({
+                "message": "Attack executed successfully."
+            })                        
         });
     }
     CheckIfIsPlayerTurn()
