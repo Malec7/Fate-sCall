@@ -166,8 +166,6 @@ function SendAttack(){
                 console.log(data);
               
                 if (data.message === "Game Over") {
-                    alert(${data.winner} wins!);
-                    alert(${data.loser} loses!);
                     window.location.href = "/mainMenu.html";
                 }
             }
