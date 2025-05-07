@@ -164,13 +164,12 @@ function SendAttack(){
             if (this.readyState == 4) {
                 var data = JSON.parse(this.responseText);
                 console.log(data);
-                // if (this.status == 200) {
-                //     alert(data.message);
-                //     // Reset the attacking units for the next turn
-                //     attackingUnits = [];
-                // } else {
-                //     console.error(data.message);
-                // }
+              
+                if (data.message === "Game Over") {
+                    alert(${data.winner} wins!);
+                    alert(${data.loser} loses!);
+                    window.location.href = "/mainMenu.html";
+                }
             }
         };
 
