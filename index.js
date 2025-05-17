@@ -187,7 +187,7 @@ app.get("/logout", (req, res) => {
 })
 
 app.post("/searchMatch", (req, res) => {
-    connection.query("SELECT game_id FROM Fates_exactbeeam.game_state WHERE game_ply1_id IS NOT NULL AND game_ply2_id IS NULL", function (err, rows, fields) {
+    connection.query("SELECT game_id FROM Fates_sitacresup.game_state WHERE game_ply1_id IS NOT NULL AND game_ply2_id IS NULL", function (err, rows, fields) {
         if (err) {
             console.log(err)
             res.status(500).send(err);
@@ -196,7 +196,7 @@ app.post("/searchMatch", (req, res) => {
 
         if (rows.length > 0){
             req.session.matchID = rows[0].game_id;
-            connection.query("UPDATE Fates_exactbeeam.game_state SET game_ply2_id = ? WHERE game_id = ?",
+            connection.query("UPDATE Fates_sitacresup.game_state SET game_ply2_id = ? WHERE game_id = ?",
                 [req.session.playerID, req.session.matchID],
                 function (err, rows, fields) {
                     if (err){
@@ -211,7 +211,7 @@ app.post("/searchMatch", (req, res) => {
             )
 
         } else {
-            connection.query("INSERT INTO Fates_exactbeeam.game_state (game_ply1_id) VALUES (?)",
+            connection.query("INSERT INTO Fates_sitacresup.game_state (game_ply1_id) VALUES (?)",
                 [req.session.playerID],
                 function (err, rows, fields) {
                     if (err){
@@ -246,7 +246,7 @@ app.post("/quitSearch", (req, res) => {
 
     function DeleteGame(){
         console.log("delete game with id " + req.session.matchID)
-        connection.query("DELETE FROM Fates_exactbeeam.game_state WHERE (game_id = ?) AND (game_ply1_id = ?)",
+        connection.query("DELETE FROM Fates_sitacresup.game_state WHERE (game_id = ?) AND (game_ply1_id = ?)",
             [req.session.matchID, req.session.playerID],
             function (err, rows, fields) {
                 if (err){
