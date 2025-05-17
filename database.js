@@ -1,10 +1,10 @@
 const mysql = require("mysql2");
 
 const connection = mysql.createConnection({
-    host: "aavec.h.filess.io",
-    user: "Fates_exactbeeam",
-    password: "830c6878858f95bfc87439f5528cec1d1a2c5ab4",
-    database: "Fates_exactbeeam",
+    host: "xarcr.h.filess.io",
+    user: "Fates_sitacresup",
+    password: "c86c7ecf57e1093a8948e00ffae60fda8e68ca48",
+    database: "Fates_sitacresup",
     port: 3307
 });
 

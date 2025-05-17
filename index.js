@@ -554,6 +554,7 @@ app.put("/attack", (req, res) => {
             });
         });
     }
+    
 
     function GetUnitDamage() {
         const attackerIds = attackingUnits.map(u => u.unit_id);
@@ -644,6 +645,9 @@ app.put("/attack", (req, res) => {
     }
     CheckIfIsPlayerTurn()
 });
+
+
+
 
 // Run the server
 app.listen(serverPort, () => {
