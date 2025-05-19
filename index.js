@@ -480,6 +480,25 @@ app.put("/attack", (req, res) => {
         );
     }
 
+    function SurvivalInstict(unit_id, amount) {
+      connection.query("UPDATE player_unit SET curr_unit_atk = curr_unit_atk + ? WHERE player_unit_id = ?",
+          [amount, unit_id],
+            (err) => {
+                if (err) {
+                    console.log(" Error increasing ATK:", err);
+                } else {
+                    console.log(` Unit ${unit_id} gained ${amount} ATK`);
+                }
+            }
+        );
+    }
+      
+
+
+
+
+
+
     function SelfDestruct(unit_id, amount){
         connection.query("UPDATE player_unit SET curr_unit_atk = GREATEST(curr_unit_atk - ?, 0) WHERE player_unit_id = ?",
              [amount, unit_id],
@@ -601,6 +620,10 @@ app.put("/attack", (req, res) => {
     
                     else if (attacker?.unit_id == 2) {
                         BuffAllAlliesHP(attacker.player_id, 2);
+                    }
+
+                    else if (attacker?.unit_id == 2 && attacker.curr_unit_hp <= 30)  {
+                        SurvivalInstict(attacker.player_id,10);
                     }
 
                     else if (attacker.unit_id == 9) {
