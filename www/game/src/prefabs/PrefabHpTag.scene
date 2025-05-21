@@ -1,0 +1,40 @@
+{
+    "id": "22f9e31d-eced-48a6-82e8-813901f4d7bc",
+    "settings": {
+        "createMethodName": "",
+        "preloadMethodName": "",
+        "compilerOutputLanguage": "JAVA_SCRIPT",
+        "exportClass": false,
+        "autoImport": false,
+        "generateAwakeHandler": false,
+        "compilerInsertSpaces": false,
+        "compilerTabSize": 4,
+        "borderWidth": 1280,
+        "borderHeight": 720,
+        "borderX": 0,
+        "borderY": 0
+    },
+    "sceneType": "PREFAB",
+    "displayList": [
+        {
+            "unlock": [
+                "x",
+                "y"
+            ],
+            "type": "Text",
+            "id": "1fad91f4-1e6b-4219-a899-1577b6dbc7c0",
+            "label": "player1_1hp",
+            "scope": "PUBLIC",
+            "x": 0,
+            "y": 0,
+            "text": "Hp:",
+            "fontFamily": "Roboto",
+            "fontSize": "25px"
+        }
+    ],
+    "meta": {
+        "app": "Phaser Editor 2D - Scene Editor",
+        "url": "https://phasereditor2d.com",
+        "contentType": "phasereditor2d.core.scene.SceneContentType"
+    }
+}

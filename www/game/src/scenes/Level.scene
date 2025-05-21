@@ -1,0 +1,300 @@
+{
+    "id": "01aefa93-6044-4159-8358-7e91310aa05f",
+    "sceneType": "SCENE",
+    "settings": {
+        "preloadPackFiles": [],
+        "createMethodName": "editorCreate",
+        "sceneKey": "Level",
+        "borderWidth": 1280,
+        "borderHeight": 720
+    },
+    "displayList": [
+        {
+            "type": "Container",
+            "id": "69910888-11ad-48c0-8a9f-77a6b53cb9d5",
+            "label": "player1_characters",
+            "scope": "PUBLIC",
+            "x": 16,
+            "y": -3,
+            "list": [
+                {
+                    "type": "Text",
+                    "id": "81f97fbf-589e-4da1-9ce5-e842f05db47a",
+                    "label": "player1",
+                    "scope": "PUBLIC",
+                    "x": 271,
+                    "y": 130,
+                    "fontFamily": "Roboto",
+                    "fontSize": "30px"
+                },
+                {
+                    "type": "Container",
+                    "id": "0c3cf3f9-b244-4d4d-96d5-0bc13fa70ce6",
+                    "label": "unit1",
+                    "scope": "PUBLIC",
+                    "list": [
+                        {
+                            "type": "Sprite",
+                            "id": "a2d022b3-1f77-44ad-af6c-eacfef87d1a2",
+                            "label": "sprite_1",
+                            "scope": "PUBLIC",
+                            "texture": {},
+                            "x": 414,
+                            "y": 382
+                        },
+                        {
+                            "prefabId": "22f9e31d-eced-48a6-82e8-813901f4d7bc",
+                            "id": "78049931-a5e3-427d-8397-d80f918e22f2",
+                            "unlock": [
+                                "x",
+                                "y"
+                            ],
+                            "label": "player1_1hp",
+                            "scope": "PUBLIC",
+                            "x": 414,
+                            "y": 422
+                        }
+                    ]
+                },
+                {
+                    "type": "Container",
+                    "id": "5351d3b7-f039-4281-988f-0df6638ef37f",
+                    "label": "unit2",
+                    "scope": "PUBLIC",
+                    "list": [
+                        {
+                            "type": "Sprite",
+                            "id": "cc047aa4-9153-4daa-8fc9-7955c8f745d3",
+                            "label": "sprite_2",
+                            "scope": "PUBLIC",
+                            "texture": {},
+                            "x": 275,
+                            "y": 237
+                        },
+                        {
+                            "prefabId": "22f9e31d-eced-48a6-82e8-813901f4d7bc",
+                            "id": "48b93b94-39f9-45db-b5c0-a7f1d94991e2",
+                            "unlock": [
+                                "x",
+                                "y"
+                            ],
+                            "label": "player1_2hp",
+                            "scope": "PUBLIC",
+                            "x": 275,
+                            "y": 276
+                        }
+                    ]
+                },
+                {
+                    "type": "Container",
+                    "id": "ecaf7b8c-53d6-4e44-9098-d0b065657d54",
+                    "label": "unit3",
+                    "scope": "PUBLIC",
+                    "list": [
+                        {
+                            "type": "Sprite",
+                            "id": "20ca5cbf-6ea3-4c1d-819c-ff0fc3eaa251",
+                            "label": "sprite_3",
+                            "scope": "PUBLIC",
+                            "texture": {},
+                            "x": 278,
+                            "y": 514
+                        },
+                        {
+                            "prefabId": "22f9e31d-eced-48a6-82e8-813901f4d7bc",
+                            "id": "7bf73470-4abf-4b53-be94-5a3c712a9390",
+                            "unlock": [
+                                "x",
+                                "y"
+                            ],
+                            "label": "player1_3hp",
+                            "scope": "PUBLIC",
+                            "x": 280,
+                            "y": 554
+                        }
+                    ]
+                },
+                {
+                    "type": "Container",
+                    "id": "ebcd051b-8ed2-4354-85e0-75a27992e783",
+                    "label": "unit4",
+                    "scope": "PUBLIC",
+                    "list": [
+                        {
+                            "type": "Sprite",
+                            "id": "1e5d46da-e400-4e6f-aad2-00db87d90daa",
+                            "label": "sprite_4",
+                            "scope": "PUBLIC",
+                            "texture": {},
+                            "x": 135,
+                            "y": 381
+                        },
+                        {
+                            "prefabId": "22f9e31d-eced-48a6-82e8-813901f4d7bc",
+                            "id": "331d0715-a38b-4c1c-a778-e0bc0126fa76",
+                            "unlock": [
+                                "x",
+                                "y"
+                            ],
+                            "label": "player1_4hp",
+                            "scope": "PUBLIC",
+                            "x": 135,
+                            "y": 423
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "Container",
+            "id": "ab61d8ff-6162-40ea-bc1a-b20154c39285",
+            "label": "player2_characters",
+            "scope": "PUBLIC",
+            "x": -535,
+            "y": 134,
+            "list": [
+                {
+                    "type": "Text",
+                    "id": "88137893-b3c8-4fd8-a31b-049a75bd1106",
+                    "label": "player2",
+                    "scope": "PUBLIC",
+                    "x": 1531.56103515625,
+                    "y": -7.98968505859375,
+                    "fontFamily": "Roboto",
+                    "fontSize": "30px"
+                },
+                {
+                    "type": "Container",
+                    "id": "bb0a8a9e-f3b6-414c-9283-99210dde4474",
+                    "label": "unit5",
+                    "scope": "PUBLIC",
+                    "x": 550.5610961914062,
+                    "y": -136.98968505859375,
+                    "list": [
+                        {
+                            "type": "Sprite",
+                            "id": "8187eb99-77fa-424f-8148-b8dc89bb68eb",
+                            "label": "sprite_5",
+                            "scope": "PUBLIC",
+                            "texture": {},
+                            "x": 828.9999389648438,
+                            "y": 381
+                        },
+                        {
+                            "prefabId": "22f9e31d-eced-48a6-82e8-813901f4d7bc",
+                            "id": "b403d78e-e1ab-4aa9-bf0e-e48fd5521481",
+                            "unlock": [
+                                "x",
+                                "y"
+                            ],
+                            "label": "player2_1hp",
+                            "scope": "PUBLIC",
+                            "x": 833.9999389648438,
+                            "y": 419
+                        }
+                    ]
+                },
+                {
+                    "type": "Container",
+                    "id": "2328c5a2-ff22-4b21-b97d-520bba006062",
+                    "label": "unit6",
+                    "scope": "PUBLIC",
+                    "x": 550.5610961914062,
+                    "y": -136.98968505859375,
+                    "list": [
+                        {
+                            "type": "Sprite",
+                            "id": "d2fefd61-7230-4d36-82ce-93092c05c2b4",
+                            "label": "sprite_6",
+                            "scope": "PUBLIC",
+                            "texture": {},
+                            "x": 980.9999389648438,
+                            "y": 239
+                        },
+                        {
+                            "prefabId": "22f9e31d-eced-48a6-82e8-813901f4d7bc",
+                            "id": "f7275f7e-0759-421d-9802-694163c1d173",
+                            "unlock": [
+                                "x",
+                                "y"
+                            ],
+                            "label": "player2_2hp",
+                            "scope": "PUBLIC",
+                            "x": 982.9999389648438,
+                            "y": 277
+                        }
+                    ]
+                },
+                {
+                    "type": "Container",
+                    "id": "56016351-846f-47f0-b698-c31ee68ed166",
+                    "label": "unit7",
+                    "scope": "PUBLIC",
+                    "x": 550.5610961914062,
+                    "y": -136.98968505859375,
+                    "list": [
+                        {
+                            "type": "Sprite",
+                            "id": "43c1eb93-94e3-4224-ba0c-f7b72ded6434",
+                            "label": "sprite_7",
+                            "scope": "PUBLIC",
+                            "texture": {},
+                            "x": 1113,
+                            "y": 385
+                        },
+                        {
+                            "prefabId": "22f9e31d-eced-48a6-82e8-813901f4d7bc",
+                            "id": "587e5c88-19fb-4235-9248-2e72d663bea2",
+                            "unlock": [
+                                "x",
+                                "y"
+                            ],
+                            "label": "player2_3hp",
+                            "scope": "PUBLIC",
+                            "x": 977.9999389648438,
+                            "y": 556
+                        }
+                    ]
+                },
+                {
+                    "type": "Container",
+                    "id": "f23b45f7-4b87-4a41-8ad2-015729e574cc",
+                    "label": "unit8",
+                    "scope": "PUBLIC",
+                    "x": 550.5610961914062,
+                    "y": -136.98968505859375,
+                    "list": [
+                        {
+                            "type": "Sprite",
+                            "id": "b02e6ced-38e4-466b-a922-7d4fe0195d76",
+                            "label": "sprite_8",
+                            "scope": "PUBLIC",
+                            "texture": {},
+                            "x": 971.9999389648438,
+                            "y": 517
+                        },
+                        {
+                            "prefabId": "22f9e31d-eced-48a6-82e8-813901f4d7bc",
+                            "id": "5520d252-3087-4a49-81a2-95ada7585d71",
+                            "unlock": [
+                                "x",
+                                "y"
+                            ],
+                            "label": "player2_4hp",
+                            "scope": "PUBLIC",
+                            "x": 1116,
+                            "y": 423
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "plainObjects": [],
+    "meta": {
+        "app": "Phaser Editor 2D - Scene Editor",
+        "url": "https://phasereditor2d.com",
+        "contentType": "phasereditor2d.core.scene.SceneContentType",
+        "version": 5
+    }
+}
