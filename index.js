@@ -511,12 +511,7 @@ app.put("/attack", (req, res) => {
         );
     }
 
-<<<<<<< Updated upstream
    
-=======
-
-
->>>>>>> Stashed changes
 
 
     function SelfDestruct(unit_id, amount){
@@ -559,10 +554,6 @@ app.put("/attack", (req, res) => {
         );
 
         }
-
-        function DamageAll(unit_id, amount)
-           connection.query("UPDATE player_unit SET curr_atk") 
-           {amouunt; unit_id}
 
     
 
