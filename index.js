@@ -62,6 +62,15 @@ app.post("/register", (req, res) => {
                     return;
                 }
 
+                connection.query("INSERT INTO player_id FROM player_blessing",
+                    function (err, rows, fields) {
+                        if (err){
+                            res.send("Error: " + err);
+                            // res.redirect("../index.html")
+                            return;
+                        }        
+                })
+
                 res.send("Registered Successfully! <br/> <a href='login.html'>Go to login page</a>")
             }
         )
@@ -283,63 +292,72 @@ app.get("/getTeamState", (req, res) => {
     }
 
     // connection.query("SELECT tank, support, damage1, damage2, blessing FROM player_team WHERE player_id = ?",
-    connection.query("SELECT  WHERE player_id = ?",
+    connection.query("SELECT player_unit_id FROM games.player_unit WHERE player_id = ?",
         [req.session.playerID],
         function (err, rows, fields) {
             if(err){
                 res.status(500).json({"message": err});
                 return;
             }
-            if(rows.length >= 1){
-                res.status(200).json({
-                    "message": "Team data found.",
-                    // "tank": rows[0].tank,
-                    // "support": rows[0].support,
-                    // "damage1": rows[0].damage1,
-                    // "damage2": rows[0].damage2,
-                    // "blessing": rows[0].blessing,
-                    // "username": req.session.username
-                });
-            }else{
-                res.status(404).json({
-                "message": "Team data not found.",
-                "username": req.session.username
-            });
-            }
+            connection.query("SELECT player_id FROM player_blessing",
+                function (err, rows, fields) {
+
+                    if(rows.length = 4){
+                        res.status(200).json({
+                            "message": "Team data found.",
+                        });
+                    }else{
+                        res.status(404).json({
+                            "message": "Team data not found.",
+                            "username": req.session.username
+                        });
+                    }
+            })
         }
     );
 });
 
 app.put("/confirmTeam", (req, res) => {
-    
+    // Check if a team already exists for the user.
     connection.query("SELECT * FROM player_unit WHERE player_id = ?", [req.session.playerID], function (err, rows, fields) {
         if (err) {
             return res.status(500).json({ message: err.message });
         }
+        connection.query("blessing",
+            function (err, rows, fields) {
 
-        if (rows.length > 0) {
-            // Team already exists, update the existing team.
-            // connection.query("UPDATE player_team SET tank = ?, support = ?, damage1 = ?, damage2 = ?, blessing = ? WHERE player_id = ?", [tank, support, damage1, damage2, blessing, req.session.playerID],
-            connection.query("UPDATE  WHERE player_id = ?", [, req.session.playerID],
-                function (err, rows, fields) {
-                    if (err) {
-                        return res.status(500).json({ message: err.message });
+                if (rows.length > 0) {
+                // Team already exists, update the existing team.
+                // connection.query("UPDATE player_team SET tank = ?, support = ?, damage1 = ?, damage2 = ?, blessing = ? WHERE player_id = ?", [tank, support, damage1, damage2, blessing, req.session.playerID],
+                connection.query("UPDATE unit_id WHERE player_id = ?", [, req.session.playerID],
+                    function (err, rows, fields) {
+                        connection.query("blessing",
+                            function (err, rows, fields) {
+                                
+                                if (err) {
+                                    return res.status(500).json({ message: err.message });
+                                }
+                                res.status(200).json({ message: "Team updated successfully." });
+                        })
                     }
-                    res.status(200).json({ message: "Team updated successfully." });
+                );
+                } else {
+                    // No team exists, create a new team.
+                    // connection.query("INSERT INTO player_team (player_id, tank, support, damage1, damage2, blessing) VALUES (?, ?, ?, ?, ?, ?)", [tank, support, damage1, damage2, blessing, req.session.playerID],
+                    connection.query("INSERT INTO unit_id WHERE player_id = ? ", [, req.session.playerID],
+                        function (err, rows, fields) {
+
+                            connection.query("blessing",
+                                function (err, rows, fields) {
+                                    if (err) {
+                                        return res.status(500).json({ message: err.message });
+                                    }
+                                    res.status(200).json({ message: "Team created successfully." });
+                            })
+                        }
+                    );
                 }
-            );
-        } else {
-            // No team exists, create a new team.
-            // connection.query("INSERT INTO player_team (player_id, tank, support, damage1, damage2, blessing) VALUES (?, ?, ?, ?, ?, ?)", [tank, support, damage1, damage2, blessing, req.session.playerID],
-            connection.query("INSERT INTO ", [, req.session.playerID],
-                function (err, rows, fields) {
-                    if (err) {
-                        return res.status(500).json({ message: err.message });
-                    }
-                    res.status(200).json({ message: "Team created successfully." });
-                }
-            );
-        }
+        })
     });
 });
 
