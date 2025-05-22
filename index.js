@@ -151,7 +151,7 @@ app.get("/checkMatch", (req, res) => {
     }
 
     //check if any match exists
-    connection.query("SELECT * FROM game_state WHERE game_ply1_id = ? OR game_ply2_id = ?", [req.session.playerID, req.session.playerID],
+    connection.query("SELECT * FROM game_state WHERE game_state = 0 AND (game_ply1_id = ? OR game_ply2_id = ?)", [req.session.playerID, req.session.playerID],
     function(err, rows, fields){
         if(err){
             res.status(500).json({"message": err});
@@ -453,6 +453,8 @@ app.put("/attack", (req, res) => {
 
     const attackingUnits = req.body.attackingUnits;
     const playerID = req.session.playerID;
+    var player1ID
+    var player2ID
 
     console.log(attackingUnits)
 
@@ -474,10 +476,21 @@ app.put("/attack", (req, res) => {
             }
     
             const currentTurn = rows[0].game_turn;
-            const player1ID = rows[0].game_ply1_id;
-            const player2ID = rows[0].game_ply2_id;
+            player1ID = rows[0].game_ply1_id;
+            player2ID = rows[0].game_ply2_id;
 
-            if ((currentTurn == 1 && player1ID == playerID) || (currentTurn == 2 && player2ID == playerID) )
+            if (!player1ID)
+                return res.json({message: "Player1ID not defined"})
+            if (!player2ID)
+                return res.json({message: "player2ID not defined"})
+            if (!currentTurn)
+                return res.json({message: "currentTurn not defined"})
+
+            console.log("currentTurn: " + currentTurn)
+            console.log(player1ID + "==" + playerID + " ? " + (player1ID == playerID))
+            console.log(player2ID + "==" + playerID + " ? " + (player2ID == playerID))
+
+            if ((currentTurn == 1 && player1ID == playerID) || (currentTurn == 2 && player2ID == playerID))
                 GetUnitDamage();
             else
                 res.json({ message: "Not your turn!" });
@@ -498,7 +511,12 @@ app.put("/attack", (req, res) => {
         );
     }
 
+<<<<<<< Updated upstream
    
+=======
+
+
+>>>>>>> Stashed changes
 
 
     function SelfDestruct(unit_id, amount){
@@ -527,6 +545,26 @@ app.put("/attack", (req, res) => {
             }
         );
     }
+
+    function SurvivalInstict(unit_id, amount) {
+      connection.query("UPDATE player_unit SET curr_unit_atk = curr_unit_atk + ? WHERE player_unit_id = ?", 
+        {amount, unit_id}, 
+        (err) => {
+           if (err) {
+              console.log("Error applying Surival instict", err);
+            } else {
+               console.log(`Unit ${unit_id} gain ${amount} ATK`);
+            }
+          }
+        );
+
+        }
+
+        function DamageAll(unit_id, amount)
+           connection.query("UPDATE player_unit SET curr_atk") 
+           {amouunt; unit_id}
+
+    
 
     function BuffAllAlliesHP(player_id, amount) {
         connection.query(
@@ -624,8 +662,9 @@ app.put("/attack", (req, res) => {
                         BuffAllAlliesHP(attacker.player_id, 2);
                     }
 
-                    else if (attacker?.unit_id == 2 && attacker.curr_unit_hp <= 30)  {
-                        SurvivalInstict(attacker.player_id,10);
+                    else if (attacker?.unit_id == 10) {
+                        SurvivalInstict(attacker.player_id, 10)
+
                     }
 
                     else if (attacker.unit_id == 9) {
@@ -659,15 +698,47 @@ app.put("/attack", (req, res) => {
     }
 
     function EndTurn(){
+      console.log("-------------------------------- Ending turn for player " + req.session.playerID + " ---------------------------------");
         connection.query("UPDATE game_state SET game_turn = CASE WHEN game_turn = 1 THEN 2 ELSE 1 END WHERE game_id = ?", [req.session.matchID], (err) => {
             if (err) {
                 return res.status(500).json({ message: err });
             }
-            res.json({
-                "message": "Attack executed successfully."
-            })                        
+
+            console.log("Player1ID:" + player1ID)
+            console.log("Player2ID:" + player2ID)
+
+            // Check if opponent has no units left
+            const opponentID = player1ID === req.session.playerID ? player2ID : player1ID;
+            console.log("--> Opponent ID: " + opponentID); 
+
+            connection.query("SELECT COUNT(*) AS DeadUnits FROM player_unit WHERE player_id = ? AND curr_unit_hp <= 0", [opponentID],
+                function (err, rows, fields) {
+                    if (err) return res.status(500).json({ message: err });
+
+                    if (rows[0].DeadUnits === 4) {
+                        // All units of the player are dead
+                        console.log("--> Player " + opponentID + " has no units left.");
+                        connection.query("UPDATE game_state SET game_state = 1, game_winner = ?, game_loser = ?", [req.session.playerID, opponentID],
+                            function (err, rows, fields) {
+                                if (err) return res.status(500).json({ message: err });
+                                res.json({
+                                    message: "Game Over",
+                                    winner: req.session.playerID,
+                                    loser: opponentID
+                                });
+                            })
+                    }else{
+                        console.log("--> Turn ended successfully for player " + req.session.playerID);
+                        res.json({
+                            message: "Turn ended successfully."
+                        })
+                    }
+                }
+            )
+
         });
     }
+
     CheckIfIsPlayerTurn()
 });
 
