@@ -498,23 +498,7 @@ app.put("/attack", (req, res) => {
         );
     }
 
-    function SurvivalInstict(unit_id, amount) {
-      connection.query("UPDATE player_unit SET curr_unit_atk = curr_unit_atk + ? WHERE player_unit_id = ?",
-          [amount, unit_id],
-            (err) => {
-                if (err) {
-                    console.log(" Error increasing ATK:", err);
-                } else {
-                    console.log(` Unit ${unit_id} gained ${amount} ATK`);
-                }
-            }
-        );
-    }
-      
-
-
-
-
+   
 
 
     function SelfDestruct(unit_id, amount){
