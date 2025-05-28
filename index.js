@@ -600,7 +600,18 @@ app.put("/attack", (req, res) => {
             player1ID = rows[0].game_ply1_id;
             player2ID = rows[0].game_ply2_id;
 
-            if ((currentTurn == 1 && player1ID == playerID) || (currentTurn == 2 && player2ID == playerID) )
+            if (!player1ID)
+                return res.json({message: "Player1ID not defined"})
+            if (!player2ID)
+                return res.json({message: "player2ID not defined"})
+            if (!currentTurn)
+                return res.json({message: "currentTurn not defined"})
+
+            console.log("currentTurn: " + currentTurn)
+            console.log(player1ID + "==" + playerID + " ? " + (player1ID == playerID))
+            console.log(player2ID + "==" + playerID + " ? " + (player2ID == playerID))
+
+            if ((currentTurn == 1 && player1ID == playerID) || (currentTurn == 2 && player2ID == playerID))
                 GetUnitDamage();
             else
                 res.json({ message: "Not your turn!" });
@@ -647,6 +658,22 @@ app.put("/attack", (req, res) => {
             }
         );
     }
+
+    function SurvivalInstict(unit_id, amount) {
+      connection.query("UPDATE player_unit SET curr_unit_atk = curr_unit_atk + ? WHERE player_unit_id = ?", 
+        {amount, unit_id}, 
+        (err) => {
+           if (err) {
+              console.log("Error applying Surival instict", err);
+            } else {
+               console.log(`Unit ${unit_id} gain ${amount} ATK`);
+            }
+          }
+        );
+
+        }
+
+    
 
     function BuffAllAlliesHP(player_id, amount) {
         connection.query(

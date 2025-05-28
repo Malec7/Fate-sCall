@@ -75,6 +75,13 @@ function UpdateMatchUI(gameState) {
         }
     });
 
+    //When Game Over go back to the main menu 
+    if (gameState.game_state === 1) {
+        alert("Game over! Returning to main menu!");
+        window.location.href = "/mainMenu.html"; 
+        return;
+    }
+
 
     // Display whose turn it is
     console.log(`Current Turn: ${gameState.current_turn}`);
@@ -159,11 +166,19 @@ function Attack(unitId) {
 }
 
 function SendAttack(){
+    console.log("Called SendAttack()")
     var request = new XMLHttpRequest();
         request.onreadystatechange = function () {
             if (this.readyState == 4) {
+                console.log("Got answer from SendAttack()")
                 var data = JSON.parse(this.responseText);
                 console.log(data);
+
+                if (data.message === "Game Over") {
+                alert(`${data.winner} wins!`);
+                alert(`${data.loser} loses!`);
+                window.location.href = "/mainMenu.html";
+            }
               
             }
         };
