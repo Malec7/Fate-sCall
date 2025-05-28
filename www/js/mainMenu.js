@@ -15,7 +15,6 @@ function CheckMatchState(){
           document.getElementById("searchingMatch").style.display = "none";
           document.getElementById("btn3").style.display = "none";
           document.getElementById("username").innerHTML = "username: " + data.username
-          document.getElementById("points").innerHTML = "garcias: " + data.points
           document.getElementById("history").innerHTML = "match history: " + data.history
       }else if (data.state == "WAITING_MATCH"){
           // decide what to when the player is already waiting for a match. Maybe show a button to quit???
@@ -23,17 +22,40 @@ function CheckMatchState(){
           document.getElementById("btn1").style.display = "none";
           document.getElementById("btn3").style.display = "block";
           document.getElementById("username").innerHTML = "username: " + data.username
-          document.getElementById("points").innerHTML = "garcias: " + data.points
           document.getElementById("history").innerHTML = "match history: " + data.history
       }else if (data.state == "IN_GAME"){
+          // window.location.href = "/game/";
           window.location.href = "/match.html";
-
       }
     }
   }
   
   request.open("GET", "/checkMatch", true);
+  request.send();
+}
 
+function GetCurrentTeam() {
+  console.log("Get current team!");
+  var request = new XMLHttpRequest();
+
+  request.onreadystatechange = function() {
+    if (this.readyState == 4) {
+        var data = JSON.parse(this.responseText);
+        console.log(data);
+
+        data.units.forEach(unit => {
+          var slotID = "slot" + unit.slot_id;
+          console.log(slotID);
+            const element = document.getElementById(slotID);
+            console.log(element)
+            element.innerHTML = unit.unit_name;
+        });
+
+        document.getElementById("bigsqr").innerHTML = data.blessing.blessing_name;
+    }
+  };
+
+  request.open("GET", "/getPlayerUnits", true);
   request.send();
 }
 
@@ -44,15 +66,12 @@ function SearchMatch() {
 
   request.onreadystatechange = function() {
     if (this.readyState == 4) {
-      if (this.status == 200) {
         var data = JSON.parse(this.responseText);
         console.log(data);
-      }
     }
   };
   
   request.open("POST", "/searchMatch", true);
-
   request.send();
 }
 

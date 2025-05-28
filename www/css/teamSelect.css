@@ -51,20 +51,20 @@ h1 {
     margin-left: 50px;
   }
 
-  #sqr16 {
+  #slot2 {
     margin-top: 30px;
     margin-bottom: 20px;
   }
 
-  #sqr17 {
+  #slot4 {
     margin-right: 100px;
   }
 
-  #sqr18 {
+  #slot1 {
     margin-right: 140px;
   }
 
-  #sqr19 {
+  #slot3 {
     margin-top: 20px;
   }
   
@@ -77,6 +77,13 @@ h1 {
     width: 50px;
     height: 50px;
     border: 2px solid black;
+    margin: 5px;
+  }
+
+  .square2selected {
+    width: 50px;
+    height: 50px;
+    border: 2px solid red;
     margin: 5px;
   }
 

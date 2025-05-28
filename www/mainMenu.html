@@ -14,19 +14,18 @@
 <div class="container">
   <div class="left-side">
     <div id="username">username</div>
-    <div id="points">points</div>
     <div id="history">match history</div><br><br>
     <div class="square-group">
       <div class="row">
-        <div id="sqr1" class="square"></div>
+        <div id="slot2" class="square"></div>
       </div>
       <div class="row">
         <div id="bigsqr" class="square"></div>
-        <div id="sqr2" class="square"></div>
-        <div id="sqr3" class="square"></div>
+        <div id="slot4" class="square"></div>
+        <div id="slot1" class="square"></div>
       </div>
       <div class="row">
-        <div id="sqr4" class="square"></div>
+        <div id="slot3" class="square"></div>
       </div>
     </div>
   </div>
@@ -38,6 +37,7 @@
   </div>
 </div>
   <script>
+      GetCurrentTeam()
       CheckMatchState()
       setInterval(CheckMatchState, 3000)
   </script>
