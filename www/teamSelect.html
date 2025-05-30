@@ -14,52 +14,46 @@
 <div class="container">
   <div class="left-side">
     <div id="username">username</div>
-    <div id="points">points</div>
     <div id="history">match history</div>
     <div class="square-group2">
       <div class="row2">
-        <!-- <div id="sqr16" class="square2"></div> -->
-        <input type="text" id="sqr16" class="square2">
+        <div type="text" id="slot2" class="square2" onclick="SelectSlot(this, 2)"></div>
       </div>
       <div class="row2">
-        <!-- <div id="bigsqr" class="square2"></div>
-        <div id="sqr17" class="square2"></div>
-        <div id="sqr18" class="square2"></div> -->
-        <input type="text" id="bigsqr" class="square2">
-        <input type="text" id="sqr17" class="square2">
-        <input type="text" id="sqr18" class="square2">
+        <input type="text" id="bigsqr" class="square2" onclick="">
+        <div type="text" id="slot4" class="square2" onclick="SelectSlot(this, 4)"></div>
+        <div type="text" id="slot1" class="square2" onclick="SelectSlot(this, 1)"></div>
       </div>
       <div class="row">
-        <!-- <div id="sqr19" class="square2"></div> -->
-        <input type="text" id="sqr19" class="square2">
+        <div type="text" id="slot3" class="square2" onclick="SelectSlot(this, 3)"></div>
       </div>
     </div>
   </div>
   <div class="right-side">
-    <div class="row">
-      <div id="sqr1" class="square"></div>
-      <div id="sqr2" class="square"></div>
-      <div id="sqr3" class="square"></div>
-      <div id="sqr4" class="square"></div>
+    <div class="row">Blessings
+        <div id="sqr1" class="square" onclick="selectBlessing(1)">Wrath of War</div>
+        <div id="sqr2" class="square" onclick="selectBlessing(2)">Waters of Life</div>
+        <div id="sqr3" class="square" onclick="selectBlessing(3)">Dance of the Blades</div>
+        <div id="sqr4" class="square" onclick="selectBlessing(4)">Sides of the Moon</div>
     </div>
-    <div class="row">
-      <div id="sqr5" class="square"></div>
-      <div id="sqr6" class="square"></div>
-      <div id="sqr7" class="square"></div>
-      <div id="sqr8" class="square"></div>
-      <div id="sqr9" class="square"></div>
+    <div class="row">DD
+        <div id="sqr5" class="square" onclick="selectUnit(7)">The Empress of Languages</div>
+        <div id="sqr6" class="square" onclick="selectUnit(8)">The Chef of Beauty</div>
+        <div id="sqr7" class="square" onclick="selectUnit(9)">The Garden of Contracts</div>
+        <div id="sqr8" class="square" onclick="selectUnit(10)">The Mirror of Lies</div>
+        <div id="sqr9" class="square" onclick="selectUnit(11)">The Embrace of Death</div>
     </div>
-    <div class="row">
-      <div id="sqr10" class="square"></div>
-      <div id="sqr11" class="square"></div>
-      <div id="sqr12" class="square"></div>
+    <div class="row">Tanks
+        <div id="sqr10" class="square" onclick="selectUnit(1)">The Dance of the Sword</div>
+        <div id="sqr11" class="square" onclick="selectUnit(2)">The Fighter of Sacrifice</div>
+        <div id="sqr12" class="square" onclick="selectUnit(3)">The Godfathers of Games</div>
     </div>
-    <div class="row">
-      <div id="sqr13" class="square"></div>
-      <div id="sqr14" class="square"></div>
-      <div id="sqr15" class="square"></div>
+    <div class="row">Supports
+        <div id="sqr13" class="square" onclick="selectUnit(4)">The Bard of the Moon</div>
+        <div id="sqr14" class="square" onclick="selectUnit(5)">The Caregiver of the Family</div>
+        <div id="sqr15" class="square" onclick="selectUnit(6)">The Prisoner of Freedom</div>
     </div>
-    <button id="btn" onclick="ConfirmTeam()">Confirm Team</button>
+    <button id="btn" onclick="Return()">Return</button>
   </div>
 </div>
 

@@ -1,3 +1,7 @@
+currentSelectedSlot = undefined
+currentSelectedIndex = -1
+slotSelected = false
+
 function GetTeamState() {
     var request = new XMLHttpRequest();
 
@@ -11,18 +15,17 @@ function GetTeamState() {
             }
             if (this.status == 404) {
                 document.getElementById("username").innerHTML = "username: " + data.username
-                document.getElementById("points").innerHTML = "garcias: " + data.points
                 document.getElementById("history").innerHTML = "match history: " + data.history
             }
             if (this.status == 200) {
                 document.getElementById("username").innerHTML = "username: " + data.username
-                document.getElementById("points").innerHTML = "garcias: " + data.points
                 document.getElementById("history").innerHTML = "match history: " + data.history
-                document.getElementById("sqr18").value = data.tank
-                document.getElementById("sqr16").value = data.damage1
-                document.getElementById("sqr19").value = data.damage2
-                document.getElementById("sqr17").value = data.support
                 document.getElementById("bigsqr").value = data.blessing
+
+                data.units.forEach(unit => {
+                    var element = document.getElementById("slot" + unit.slot_id)
+                    element.innerHTML = unit.unit_name
+                })
             }
         }
     }
@@ -32,51 +35,80 @@ function GetTeamState() {
     request.send();
 }
 
-function ConfirmTeam() {
-    // var tank = document.getElementById("sqr18").value
-    // var damage1 = document.getElementById("sqr16").value
-    // var damage2 = document.getElementById("sqr19").value
-    // var support = document.getElementById("sqr17").value
-    // var blessing = document.getElementById("bigsqr").value
+function selectBlessing(blessingId){
+    var request = new XMLHttpRequest();
+    request.onreadystatechange = function () {
+        if (this.readyState == 4) {
+            var data = JSON.parse(this.responseText);
+            console.log(data)
 
-    // if(!tank || !damage1 || !damage2 || !support || !blessing){
-    //     console.log("Need team filled")
-    //     return;
-    // }
+            const blessingName = data.blessing_name
+            document.getElementById("bigsqr").value = blessingName
+            // if (this.status == 200) {
+            //     var unitData = JSON.parse(this.responseText);
+            //     var unitName = unitData.unit_name;
+            //     var blessingData = JSON.parse(this.responseText);
+            //     var blessingName = blessingData.blessing_name;
 
-    // // Create a JSON object with the username and password
-    // var dataToSend = {
-    //     "tank": tank,
-    //     "damage1": damage1,
-    //     "damage2": damage2,
-    //     "support": support,
-    //     "blessing": blessing
-    // }
+            //     if (document.getElementById("sqr18").value === "") {
+            //         document.getElementById("sqr18").value = unitName;
+            //     } else if (document.getElementById("sqr16").value === "") {
+            //         document.getElementById("sqr16").value = unitName;
+            //     } else if (document.getElementById("sqr19").value === "") {
+            //         document.getElementById("sqr19").value = unitName;
+            //     } else if (document.getElementById("sqr17").value === "") {
+            //         document.getElementById("sqr17").value = unitName;
+            //     } else if (document.getElementById("bigsqr").value === "") {
+            //         document.getElementById("bigsqr").value = blessingName;
+            //     } else {
+            //         alert("All slots are filled!");
+            //     }
+            // } else {
+            //     console.error("Error getting units/blessing details:", this.statusText);
+            // }
+        }
+    };
+
+    request.open("GET", "/setBlessing/" + blessingId, true);
+    request.send();
+}
+
+function selectUnit(unitId) {
+    if (currentSelectedIndex == -1){
+        console.log("no slot selected");
+        return
+    }
 
     var request = new XMLHttpRequest();
     request.onreadystatechange = function () {
-        if (this.readyState == 4){
-            // When the request is done, parse the response to JSON.
-            var data = JSON.parse(this.response)
-
-            // Log the response to the console of the browser.
+        if (this.readyState == 4) {
+            const data = JSON.parse(this.responseText);
             console.log(data)
-
-            if (this.status == 200){
-                // If status is 200, redirect to the main page since everything is OK and the team is chosen
-                window.location.href = "mainMenu.html"
-            }else{
-                // If status is not 200, show the error message
-                document.getElementById("message").innerHTML = data.message
-            }
-           
+            currentSelectedSlot.innerHTML = data.unit_name
+            currentSelectedSlot.classList.remove("square2selected");
+            currentSelectedSlot.classList.add("square2");
+            slotSelected = false
         }
-    }
-    
-    request.open("PUT", "/confirmTeam", true);
-  
-    request.setRequestHeader("Content-Type", "application/json");
+    };
 
-    // Send the request with the data. Stringify will convert the JSON object to a string.
-    request.send(JSON.stringify(dataToSend));
+    request.open("GET", "/slot/" + currentSelectedIndex + "/setUnit/" + unitId, true);
+    request.send();
+}
+
+function SelectSlot(element, slotID) {
+    console.log(currentSelectedSlot)
+    if (slotSelected){
+        currentSelectedSlot.classList.remove("square2selected");
+        currentSelectedSlot.classList.add("square2");
+    }
+
+    currentSelectedIndex = slotID
+    currentSelectedSlot = element
+    currentSelectedSlot.classList.remove("square2");
+    currentSelectedSlot.classList.add("square2selected");
+    slotSelected = true
+}
+
+function Return() {
+    window.location.href = "mainMenu.html";
 }
