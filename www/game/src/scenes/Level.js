@@ -1,6 +1,7 @@
-
 // You can write more code here
 var selectedUnit = null;
+var selectedTarget = null;
+let attackingUnits = [];
 /* START OF COMPILED CODE */
 
 class Level extends Phaser.Scene {
@@ -148,6 +149,11 @@ class Level extends Phaser.Scene {
 		player2.setStyle({ "fontFamily": "Arial", "fontSize": "29px" });
 		player2_characters.add(player2);
 
+		// turn
+		const turn = this.add.text(570, 81, "", {});
+		turn.text = "Player";
+		turn.setStyle({ "fontFamily": "Arial", "fontSize": "25px" });
+
 		this.sprite_1 = sprite_1;
 		this.player1_1hp = player1_1hp;
 		this.unit1 = unit1;
@@ -176,6 +182,7 @@ class Level extends Phaser.Scene {
 		this.unit8 = unit8;
 		this.player2 = player2;
 		this.player2_characters = player2_characters;
+		this.turn = turn;
 
 		this.events.emit("scene-awake");
 	}
@@ -236,6 +243,8 @@ class Level extends Phaser.Scene {
 	player2;
 	/** @type {Phaser.GameObjects.Container} */
 	player2_characters;
+	/** @type {Phaser.GameObjects.Text} */
+	turn;
 
 	/* START-USER-CODE */
 
@@ -277,9 +286,31 @@ class Level extends Phaser.Scene {
 	}
 
 	UnitClick(unitNumber) {
-
 		console.log("Clicked on unit " + unitNumber);
 		var unit = this[`unit${unitNumber}`];
+		var unitId;
+
+		if (unitNumber < 5)
+			unitId = this.scene.scene.currentMatchState.player_units.player1[unitNumber-1].unit_id;
+		else
+			unitId = this.scene.scene.currentMatchState.player_units.player2[unitNumber-5].unit_id;
+
+
+		const isPlayer1Turn = this.currentMatchState.current_turn === "Player 1";
+		const validUnits = isPlayer1Turn ? this.scene.scene.currentMatchState.player_units.player1 : this.scene.scene.currentMatchState.player_units.player12;
+		console.log("Valid units for current turn:", validUnits);
+
+		const isValidUnit = validUnits.some(u => {
+			// console.log("Checking unit:", u.player_unit_id, "against clicked unit ID:", unitId);
+			return u.player_unit_id === unitId && u.curr_unit_hp > 0;
+		});
+
+		// console.log("Is valid unit:", isValidUnit);
+
+		if (!isValidUnit) {
+			alert("You can only select your own units!");
+			return;
+		}
 
 		if (selectedUnit && selectedUnit !== unit) {
 			var oldUnitSprite = selectedUnit.list[0];
@@ -289,6 +320,34 @@ class Level extends Phaser.Scene {
 		selectedUnit = unit;
 		var unitSprite = unit.list[0];
 		unitSprite.setTint(0xff0000); // Change color to red on click
+	}
+
+	TargetClick(targetId, unitNumber) {
+		console.log("Targeting unit " + targetId);
+		var target = this[`unit${unitNumber}`];
+
+		if (unitNumber < 5)
+			targetId = this.scene.scene.currentMatchState.player_units.player2[unitNumber-5].unit_id;
+		else
+			unitId = this.scene.scene.currentMatchState.player_units.player1[unitNumber-1].unit_id;
+
+		// Check if the target belongs to the opposing team
+		const isPlayer1Turn = this.currentMatchState.current_turn === "Player 1";
+		const enemyUnits = isPlayer1Turn ? this.currentMatchState.player_units.player2 : this.currentMatchState.player_units.player1;
+
+		if (!enemyUnits.some(unit => unit.player_unit_id === targetId && unit.curr_unit_hp > 0)) {
+			alert("You can only target enemy units!");
+			return;
+		}
+
+		if (selectedTarget && selectedTarget !== target) {
+			var oldTargetSprite = selectedTarget.list[0];
+			oldTargetSprite.setTint(0xffffff); // Reset color to white
+		}
+
+		selectedTarget = target;
+		var targetSprite = target.list[0];
+		targetSprite.setTint(0x000000); // Change color to black on click
 	}
 
 	GetMatchState() {
@@ -355,10 +414,83 @@ class Level extends Phaser.Scene {
             window.location.href = "/mainMenu.html"; 
             return;
         }
-        // Update turn indicator
         console.log(`Current Turn: ${gameState.current_turn}`);
-        this.UpdateTurnIndicator(gameState.current_turn);
     }
+
+	Attack(unitId, targetId) {
+		const isPlayer1Turn = this.currentMatchState.current_turn === "Player 1";
+		const validUnits = isPlayer1Turn ? this.currentMatchState.player_units.player1 : this.currentMatchState.player_units.player2;
+
+		// Check if the unit is from the current player's team
+		if (!validUnits.some(unit => unit.player_unit_id === unitId && unit.curr_unit_hp > 0)) {
+			alert("You can only attack with your own units!");
+			return;
+		}
+
+		// Check if the unit is already selected
+		if (attackingUnits.some(unit => unit.unit_id === unitId)) {
+			alert("This unit has already chosen a target.");
+			return;
+		}
+		if (attackingUnits.length >= 2) {
+			alert("Only choose 2 units.");
+			return;
+		}
+
+		// Set up targeting for enemy units
+		const enemyUnits = isPlayer1Turn ? this.currentMatchState.player_units.player2 : this.currentMatchState.player_units.player1;
+
+		enemyUnits.forEach((enemyUnit, index) => {
+			const targetUnit = this[`unit${index + (isPlayer1Turn ? 5 : 1)}`];
+			targetUnit.setInteractive().on('pointerdown', () => {
+				this.TargetClick(enemyUnit.player_unit_id, unitId);
+			});
+		});
+
+		// Check if the target is valid
+		const validTarget = enemyUnits.find(unit => unit.player_unit_id == targetId && unit.curr_unit_hp > 0);
+		if (!validTarget) {
+			alert("Invalid target. Choose an enemy alive.");
+			return;
+		}
+
+		// Add the attacking unit and target to the list
+		attackingUnits.push({ unit_id: unitId, target_id: targetId });
+
+		var element = this("attackers");
+		element.innerHTML = "";
+		attackingUnits.forEach(attacker => {
+			element.innerHTML += attacker.unit_id + " --> " + attacker.target_id + "<br/>";
+		});
+
+		if (attackingUnits.length <= 2 && attackingUnits.length > 0) {
+			element.innerHTML += "<button onclick='SendAttack()'>Attack!</button>";
+		}
+
+		selectedUnit = null;
+		selectedTarget = null;
+	}
+
+	SendAttack() {
+		const request = new XMLHttpRequest();
+		request.onreadystatechange = () => {
+			if (request.readyState == 4) {
+				const data = JSON.parse(request.responseText);
+				console.log(data);
+				if (data.message === "Game Over") {
+					alert(`${data.winner} wins!`);
+					alert(`${data.loser} loses!`);
+					window.location.href = "/mainMenu.html";
+				} else {
+					this.attackingUnits = [];
+				}
+			}
+		};
+
+		request.open("PUT", "/attack", true);
+		request.setRequestHeader("Content-Type", "application/json");
+		request.send(JSON.stringify({ attackingUnits: this.attackingUnits }));
+	}
 
 	/* END-USER-CODE */
 }

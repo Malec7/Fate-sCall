@@ -24,8 +24,7 @@ function CheckMatchState(){
           document.getElementById("username").innerHTML = "username: " + data.username
           document.getElementById("history").innerHTML = "match history: " + data.history
       }else if (data.state == "IN_GAME"){
-          // window.location.href = "/game/";
-          window.location.href = "/match.html";
+          window.location.href = "/game/";
       }
     }
   }
@@ -68,6 +67,9 @@ function SearchMatch() {
     if (this.readyState == 4) {
         var data = JSON.parse(this.responseText);
         console.log(data);
+        // if (data.message) {
+        //   alert(data.message);
+        // }
     }
   };
   
