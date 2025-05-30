@@ -361,6 +361,24 @@ app.put("/confirmTeam", (req, res) => {
     });
 });
 
+//   function Applylessings(playerIDs, callback) {
+//     connection.query(`SELECT pb.player_id, b.blessing_atk, b.blessing_hp, b.blessing_heal FROM player_blessing pb JOIN blessing b ON pb.blessing_id = b.blessing_id WHERE pb.player_id IN (?, ?)`, playerIDs,
+//         (err, rows) => {
+//             if (err) return callback(err);
+//             const blessings = {
+//                 [playerIDs[0]]: { atk: 0, hp: 0, heal: 0 },
+//                 [playerIDs[1]]: { atk: 0, hp: 0, heal: 0 }
+//             };
+//             rows.forEach(row => {
+//                 blessings[row.player_id].atk += row.blessing_atk;
+//                 blessings[row.player_id].hp += row.blessing_hp;
+//                 blessings[row.player_id].heal += row.blessing_heal;
+//             });
+//             callback(null, blessings);
+//         }
+//     );
+// }
+
 app.get("/getMatchState", (req, res) => {
     if (!req.session.username) {
         res.status(401).json({ message: "User  not logged in" });
@@ -377,7 +395,7 @@ app.get("/getMatchState", (req, res) => {
             if (gameRows.length === 0) {
                 res.status(404).json({ message: "Match not found" });
                 return;
-            }
+            }    
     
             const gameState = gameRows[0];
     
@@ -385,7 +403,7 @@ app.get("/getMatchState", (req, res) => {
                 if (err) {
                     res.status(500).json({ message: err });
                     return;
-                }
+                }  
     
                 const playerUnits = {
                     player1: [],
@@ -511,8 +529,6 @@ app.put("/attack", (req, res) => {
         );
     }
 
-   
-
 
     function SelfDestruct(unit_id, amount){
         connection.query("UPDATE player_unit SET curr_unit_atk = GREATEST(curr_unit_atk - ?, 0) WHERE player_unit_id = ?",
@@ -541,19 +557,50 @@ app.put("/attack", (req, res) => {
         );
     }
 
-    function SurvivalInstict(unit_id, amount) {
+     function SurvivalInstict(unit_id, amount) {
       connection.query("UPDATE player_unit SET curr_unit_atk = curr_unit_atk + ? WHERE player_unit_id = ?", 
-        {amount, unit_id}, 
+        [amount, unit_id], 
         (err) => {
            if (err) {
               console.log("Error applying Surival instict", err);
             } else {
-               console.log(`Unit ${unit_id} gain ${amount} ATK`);
+                console.log(`Unit ${unit_id} gain ${amount} ATK`);
             }
-          }
+           }
+         );
+
+         }
+    
+    function ExtraDamage(target_id, amount) {
+    connection.query("UPDATE player_unit SET curr_unit_hp = curr_unit_hp - ? WHERE player_unit_id = ?",
+       [amount, target_id],
+            (err) => {
+                if (err) {
+                    console.log(" Error doing extra damage:", err);
+                } else {
+                    console.log(` Enemy ${target_id} lost extra ${amount} HP`);
+                }
+            }
         );
 
+    }
+
+
+    function DebuffATK(target_id, amount) {
+     connection.query(
+        "UPDATE player_unit SET curr_unit_atk = GREATEST(curr_unit_atk - ?, 0) WHERE player_unit_id = ?",
+        [amount, target_id],
+        (err) => {
+            if (err) {
+                console.log(" Error applying debuff to target:", err);
+            } else {
+                console.log(`Debuff:Target unit ${target_id} lost ${amount} ATK`);
+            }
         }
+    );
+}
+
+    // function DamageAllEnemies()
 
     
 
@@ -568,27 +615,146 @@ app.put("/attack", (req, res) => {
                     console.log(`All allies of player ${player_id} gained ${amount} HP permanently`);
                 }
             }
+
+           
         );
     }
 
-    function HealAllies(attacker) {
-        const healAmount = attacker.curr_unit_heal;
+
     
-        connection.query(`
-            SELECT pu.player_unit_id, pu.curr_unit_hp, pu.unit_id, u.unit_hp
-            FROM player_unit pu
-            JOIN unit u ON pu.unit_id = u.unit_id
-            WHERE pu.player_id = ?
-        `, [attacker.player_id], (err, allies) => {
+ function DamageAllEnemies(attacker_player_id, amount) {
+    console.log(`DamageAllEnemies called with attacker_player_id: ${attacker_player_id}, amount: ${amount}`);
+    // Step 1: Find the enemy player ID (assuming 2-player game)
+    connection.query(
+        `SELECT game_ply1_id, game_ply2_id FROM game_state WHERE game_ply1_id = ? OR game_ply2_id = ? LIMIT 1`,
+        [attacker_player_id, attacker_player_id],
+        (err, result) => {
+            if (err || result.length === 0) {
+                console.log(" Could not find enemies:", err);
+                return;
+            }
+
+            const game = result[0];
+            const enemy_player_id = game.game_ply1_id === attacker_player_id ? game.game_ply2_id : game.game_ply1_id;
+
+            // Step 2: Damage all enemy units (only those with HP > 0)
+            connection.query(`UPDATE player_unit SET curr_unit_hp = GREATEST(curr_unit_hp - ?, 0) WHERE player_id = ? AND curr_unit_hp > 0`,
+                [amount, enemy_player_id],
+                (err2) => {
+                    if (err2) {
+                        console.log(" Error damaging all enemies:", err2);
+                    } else {
+                        console.log(` All units of enemy player ${enemy_player_id} took ${amount} damage`);
+                    }
+                }
+            );
+        }
+    );
+}  
+
+    function ExecuteAttack(attacker, target_id) {
+    let finalDamage = attacker.curr_unit_atk;
+
+    connection.query("SELECT curr_unit_hp FROM player_unit WHERE player_unit_id = ?",
+        [target_id],
+        (err, results) => {
+            if (err || results.length === 0) {
+                console.log("Error fetching target HP:", err);
+                return;
+            }
+
+            const targetHP = results[0].curr_unit_hp;
+           
+
+            if (targetHP < 15) {
+                finalDamage *= 2;
+                console.log(`Execute was triggered! Target had ${targetHP} HP. Damage doubled to ${finalDamage}.`);
+            } else {
+                console.log(`Not execute`);
+            }
+
+             MakeDamage(target_id, finalDamage);
+
+           }
+        
+          );  
+        }
+    
+
+    function BuffAllAlliesATK(player_id, amount) {
+        connection.query("UPDATE player_unit SET curr_unit_atk = curr_unit_atk + ? WHERE player_id = ?",
+        [amount, player_id],
+        (err) => {
+            if (err) { 
+                console.log("Error buffing allies ATK:", err);
+            } else { 
+                console.log(`All allies of player ${player_id} gained ${amount} ATK permanently`)
+            }
+
+            }
+
+        );
+
+    }
+
+      
+//     function CritHit (attacker) {
+//      let baseDamage = attacker.curr_unit_atk
+//       connection.query(`SELECT unit_type_id FROM unit WHERE unit_id = ?`, [attacker.unit_id], (err, results) => {
+//         if (err || results.length === 0) {
+//             console.log("Error fetching unit_type_id:", err);
+//             return;
+//         }
+
+//         const unitTypeId2 = results[0].unit_type_id;
+
+//         if (unitTypeId2 !== 3) {
+//             console.log("Unit is not a DD.");
+//             return;
+//         }
+      
+//          let critRate = Math.floor(Math.random() * 10)
+
+//          if (critRate <= 9) { 
+//             baseDamage *=2;
+//             console.log(`Crit is triggered! Target had ${targetHP} HP. Damage doubled to ${finalDamage}.`);
+//             } else {
+//                 console.log(`Not crit`);
+//             }
+
+//         }
+
+//       );
+//  }
+
+
+    function HealAllies(attacker) {
+
+    connection.query(`SELECT unit_type_id FROM unit WHERE unit_id = ?`, [attacker.unit_id], (err, results) => {
+        if (err || results.length === 0) {
+            console.log("Error fetching unit_type_id:", err);
+            return;
+        }
+
+        const unitTypeId = results[0].unit_type_id;
+
+        if (unitTypeId !== 2) {
+            console.log("Unit is not a healer.");
+            return;
+        }
+
+        const healAmount = attacker.curr_unit_heal;
+
+        connection.query(`SELECT pu.player_unit_id, pu.curr_unit_hp, pu.unit_id, u.unit_hp FROM player_unit pu JOIN unit u ON pu.unit_id = u.unit_id WHERE pu.player_id = ?`, [attacker.player_id], (err, allies) => {
             if (err) {
                 console.log("Error fetching allies:", err);
                 return;
             }
-    
+
             allies.forEach(ally => {
                 if (ally.player_unit_id !== attacker.player_unit_id && ally.curr_unit_hp > 0) {
                     const newHP = Math.min(ally.curr_unit_hp + healAmount, ally.unit_hp);
-    
+
                     connection.query(
                         "UPDATE player_unit SET curr_unit_hp = ? WHERE player_unit_id = ?",
                         [newHP, ally.player_unit_id],
@@ -603,7 +769,8 @@ app.put("/attack", (req, res) => {
                 }
             });
         });
-    }
+    }); 
+}
     
 
     function GetUnitDamage() {
@@ -621,6 +788,7 @@ app.put("/attack", (req, res) => {
                     res.json({ "error": "No units found" });
                     return;           
                 }
+
     
                 attackingUnits.forEach(attack => {  
                     var target_id = attack.target_id;
@@ -639,37 +807,62 @@ app.put("/attack", (req, res) => {
                         damage = 1;
                     }
 
+            
                     if (attacker.unit_id == 1) {
                         console.log(` Ability triggered: Unit ${attacker.player_unit_id} gains 5 HP`);
                         IncreaseHP(attacker.player_unit_id, 5);
                     }
 
-                    else if (attacker.unit_id == 11) {
+                    if (attacker.unit_id == 4) {
+                        BuffAllAlliesATK(attacker.player_id, 1)
+
+                    }
+
+                    else if (attacker.unit_id == 12) {
                         console.log(` Ability triggered: Unit ${attacker.player_unit_id} loses 2 HP and gains +2 ATK`);
-                        ApplyRecklessBuff(attacker.player_unit_id, 2);
+                        ApplyRecklessBuff(attackattacker.player_unit_id, 2);
                    }
     
-                    else if (attacker?.unit_id == 2) {
+                    else if (attacker.unit_id == 2 ) {
                         BuffAllAlliesHP(attacker.player_id, 2);
                     }
 
-                    else if (attacker?.unit_id == 10) {
-                        SurvivalInstict(attacker.player_id, 10)
-
+                    else if (attacker.unit_id == 11) {
+                        ExecuteAttack(attacker, target_id)
                     }
 
-                    else if (attacker.unit_id == 9) {
+                    else if (attacker.unit_id == 12  && attacker.curr_unit_hp<25) {
+                         SurvivalInstict(attacker.player_unit_id, 5)
+
+                     }
+
+                     else if (attacker.unit_id == 10){
+                        DamageAllEnemies(attacker.player_id, 2)
+
+                     }
+
+                    else if (attacker.unit_id == 12) {
                         SelfDestruct(attacker.player_unit_id, 1);
                     }
 
-                    
+                    else if (attacker.unit_id == 5) {
+                        DebuffATK(target_id, 3)
+                    }
+
+
+                    else if (attacker.unit_id == 9) {
+                        const extra = Math.floor(Math.random() * 11);
+                        ExtraDamage(target_id, extra); 
+                    }
+
+                    // else if (attacker.unit_id == 11)
+
 
                     console.log("Applying", damage, "damage to unit", target_id);
-                    MakeDamage(target_id, damage);
-
-                    if (attacker.unit_id === 4 || attacker.unit_id === 5) {
-                        HealAllies(attacker);
-                    }
+                    MakeDamage(attacker_unit_id, defender_unit_id, target_id, damage);
+                    
+                    HealAllies(attacker);
+                    
 
                     
                 });
@@ -678,15 +871,79 @@ app.put("/attack", (req, res) => {
         });
     }
 
-    function MakeDamage(unit_id, damage){
-        connection.query("UPDATE player_unit SET curr_unit_hp = GREATEST(curr_unit_hp - ?, 0) WHERE player_unit_id = ?", [damage, unit_id], (err) => {
-            if (err) {
-                console.log(err)
+   function MakeDamage(attacker_unit_id, defender_unit_id, damage) {
+    // Step 1: Get attacker's unit_type_id
+    connection.query(
+        `SELECT u.unit_type_id FROM player_unit pu JOIN unit u ON pu.unit_id = u.unit_id WHERE pu.player_unit_id = ?`,
+        [attacker_unit_id],
+        (err, attackerResults) => {
+            if (err || attackerResults.length === 0) {
+                console.log("Error fetching attacker's unit_type_id:", err);
+                return;
             }
-        });
 
-        console.log(`Damage query: UPDATE player_unit SET curr_unit_hp = GREATEST(curr_unit_hp - ${damage}, 0) WHERE player_unit_id = ${unit_id}`);
-    }
+            const unit_type_id = attackerResults[0].unit_type_id;
+
+            // Step 2: Apply crit chance if unit_type_id === 3
+            if (unit_type_id === 3) {
+                const roll = Math.random(); 
+                 console.log(`Crit roll: ${roll}`);
+                if (roll < 0.2) {
+                    damage *= 2;
+                    console.log(" Crit Hit! Damage doubled.");
+                } else {
+                 console.log("Not crit!")
+                }
+            }
+
+            // Step 3: Get defender's player_id
+            connection.query(
+                `SELECT pu.player_id FROM player_unit pu WHERE pu.player_unit_id = ?`,
+                [defender_unit_id],
+                (err2, results) => {
+                    if (err2 || results.length === 0) {
+                        console.log("Error fetching defender's player_id:", err2);
+                        return;
+                    }
+
+                    const playerId = results[0].player_id;
+
+                    // Step 4: Check for tank unit
+                    connection.query(
+                        `SELECT pu.player_unit_id FROM player_unit pu 
+                         JOIN unit u ON pu.unit_id = u.unit_id 
+                         WHERE pu.player_id = ? AND u.unit_type_id = 1 AND pu.curr_unit_hp > 0 LIMIT 1`,
+                        [playerId],
+                        (err3, results2) => {
+                            if (err3) {
+                                console.log("Error checking for defender units:", err3);
+                                return;
+                            }
+
+                            if (results2.length > 0) {
+                                damage = Math.max(0, damage - 5);
+                                console.log(` Tank present — damage reduced to ${damage}`);
+                            }
+
+                            // Step 5: Apply final damage
+                            connection.query(
+                                "UPDATE player_unit SET curr_unit_hp = GREATEST(curr_unit_hp - ?, 0) WHERE player_unit_id = ?",
+                                [damage, defender_unit_id],
+                                (err4) => {
+                                    if (err4) {
+                                        console.log("Error applying damage:", err4);
+                                    } else {
+                                        console.log(` Applied ${damage} damage to unit ${defender_unit_id}`);
+                                    }
+                                }
+                            );
+                        }
+                    );
+                }
+            );
+        }
+    );
+}
 
     function EndTurn(){
       console.log("-------------------------------- Ending turn for player " + req.session.playerID + " ---------------------------------");
