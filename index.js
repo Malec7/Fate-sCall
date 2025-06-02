@@ -56,6 +56,7 @@ app.post("/register", (req, res) => {
                     return;
                 }
 
+                console.log("Player created with ID: " + rows.insertId);
                 CreateTeam(rows.insertId)
             }
         )
@@ -63,7 +64,7 @@ app.post("/register", (req, res) => {
 
     function CreateTeam(playerID){
         connection.query("INSERT INTO player_unit (player_id, slot_id) VALUES (?, 1), (?, 2), (?, 3), (?, 4)", [playerID,playerID,playerID,playerID],
-            function (err, rows, fields) {
+            function (err, unitRows, fields) {
                 if (err){
                     res.send("Error: " + err);
                     // res.redirect("../index.html")
@@ -71,7 +72,7 @@ app.post("/register", (req, res) => {
                 }
 
                 connection.query("INSERT INTO player_blessing (player_id) VALUES (?)", [playerID],
-                    function (err, rows, fields) {
+                    function (err, blessingRows, fields) {
                         if (err){
                             res.send("Error: " + err);
                             // res.redirect("../index.html")
@@ -80,9 +81,8 @@ app.post("/register", (req, res) => {
                 })
 
                 req.session.username = receivedUsername
-                req.session.playerID = rows.insertId
+                req.session.playerID = playerID
 
-                
                 res.status(200).json({
                     "message": "Registered Successfully!",
                     "redirect": "/mainMenu.html"
@@ -190,6 +190,7 @@ app.get("/checkMatch", (req, res) => {
                     }
                 );
             }else{
+                req.session.matchID = rows[0].game_id
                 res.status(404).json(
                     {
                         "message": "You are already in game",
@@ -351,7 +352,7 @@ app.post("/quitSearch", (req, res) => {
 
     function DeleteGame(){
         console.log("delete game with id " + req.session.matchID)
-        connection.query("DELETE FROM games.game_state WHERE (game_id = ?) AND (game_ply1_id = ?)",
+        connection.query("DELETE FROM Fates_sitacresup.game_state WHERE (game_id = ?) AND (game_ply1_id = ?)",
             [req.session.matchID, req.session.playerID],
             function (err, rows, fields) {
                 if (err){
@@ -392,7 +393,7 @@ app.get("/getTeamState", (req, res) => {
             return res.status(500).json({ message: err });
         }
 
-        connection.query("SELECT * FROM games.player_blessing INNER JOIN blessing ON player_blessing.blessing_ID = blessing.blessing_id WHERE player_id = ?", [playerId], (err, blessingRows) => {
+        connection.query("SELECT * FROM Fates_sitacresup.player_blessing INNER JOIN blessing ON player_blessing.blessing_ID = blessing.blessing_id WHERE player_id = ?", [playerId], (err, blessingRows) => {
             if (err) {
                 return res.status(500).json({ message: err });
             }
@@ -433,6 +434,8 @@ app.get("/slot/:slotId/setUnit/:unitId/", (req, res) => {
                 if (err){
                     console.log(err)
                 }
+
+                console.log("Affected rows: ", rows.affectedRows);
             }
         )
 
@@ -460,6 +463,8 @@ app.get("/setBlessing/:blessingId/", (req, res) => {
                 if (err){
                     console.log(err)
                 }
+
+                console.log("Affected rows: ", rows.affectedRows);
             }
         )
 
@@ -500,89 +505,86 @@ app.get("/getAvailableUnits", (req, res) => {
 // }
 
 app.get("/getMatchState", (req, res) => {
-    if (!req.session.username) {
-        res.status(401).json({ message: "User  not logged in" });
-        return;
-    }
+	if (!req.session.username) {
+		res.status(401).json({ message: "User not logged in" });
+		return;
+	}
 
-    function GetMatchState(){
-        connection.query("SELECT * FROM game_state WHERE game_id = ?", [req.session.matchID], (err, gameRows) => {
-            if (err) {
-                res.status(500).json({ message: err });
-                return;
-            }
-    
-            if (gameRows.length === 0) {
-                res.status(404).json({ message: "Match not found" });
-                return;
-            }    
-    
-            const gameState = gameRows[0];
-    
-            connection.query("SELECT * FROM player_unit WHERE player_id = ? OR player_id = ?", [gameState.game_ply1_id, gameState.game_ply2_id], (err, unitRows) => {
-                if (err) {
-                    res.status(500).json({ message: err });
-                    return;
-                }  
-    
-                const playerUnits = {
-                    player1: [],
-                    player2: []
-                };
+	function GetMatchState() {
+		connection.query("SELECT * FROM game_state WHERE game_id = ?", [req.session.matchID], (err, gameRows) => {
+			if (err) {
+				res.status(500).json({ message: err });
+				return;
+			}
 
-                //mudar de lado no player2
-    
-                unitRows.forEach(unit => {
-                    playerUnits[unit.player_id === gameState.game_ply1_id ? 'player1' : 'player2'].push({
-                        unit_id: unit.unit_id,
-                        curr_unit_hp: unit.curr_unit_hp,
-                        curr_unit_atk: unit.curr_unit_atk,
-                        curr_unit_heal: unit.curr_unit_heal,
-                        slot_id: unit.slot_id,
-                        player_unit_id: unit.player_unit_id,
-                        player_unit: (unit.player_id === req.session.playerID)
-                    });
-                });
-    
-                // Determine whose turn it is
-                const currentTurn = gameState.game_turn === 1 ? "Player 1" : "Player 2";
-    
-                res.status(200).json({
-                    message: "Match state retrieved successfully.",
-                    game_state: {
-                        current_turn: currentTurn,
-                        player_units: playerUnits,
-                        game_status: gameState.game_state // 0 for ongoing, 1 for finished, etc.
-                    }
-                });
-            });
-        });
-    }
+			if (gameRows.length === 0) {
+				res.status(404).json({ message: "Match not found" });
+				return;
+			}
 
-    function GetMatchID(){
-        connection.query("SELECT game_id FROM game_state WHERE game_ply1_id = ? OR game_ply2_id = ?", [req.session.playerID,req.session.playerID],
-            function (err, rows, fields){
+			const gameState = gameRows[0];
 
-                if (err) {
-                    res.status(500).json({ "message": err });
-                    return;
-                }
+			connection.query("SELECT * FROM player_unit WHERE player_id = ? OR player_id = ?", [gameState.game_ply1_id, gameState.game_ply2_id], (err, unitRows) => {
+				if (err) {
+					res.status(500).json({ message: err });
+					return;
+				}
 
-                if (rows.length == 0){
-                    res.status(404).json({"message": "Not in a match"})
-                    return
-                }
+				const playerUnits = {
+					player1: [],
+					player2: []
+				};
 
-                req.session.matchID = rows[0].game_id
-                GetMatchState()
-            }
-        )
-    }
+				unitRows.forEach(unit => {
+					playerUnits[unit.player_id === gameState.game_ply1_id ? 'player1' : 'player2'].push({
+						unit_id: unit.unit_id,
+						curr_unit_hp: unit.curr_unit_hp,
+						curr_unit_atk: unit.curr_unit_atk,
+						curr_unit_heal: unit.curr_unit_heal,
+						slot_id: unit.slot_id,
+						player_unit_id: unit.player_unit_id,
+						player_unit: (unit.player_id === req.session.playerID)
+					});
+				});
 
-    if (!req.session.matchID)
-        GetMatchID()
-    else
-        GetMatchState()
+				const currentTurn = gameState.game_turn === 1 ? "Player 1" : "Player 2";
+
+				res.status(200).json({
+					message: "Match state retrieved successfully.",
+					game_state: {
+						current_turn: currentTurn,
+						player_units: playerUnits,
+						game_status: gameState.game_state, // 1 = game over
+						winner_id: gameState.game_winner,
+						loser_id: gameState.game_loser,
+						player_id: req.session.playerID
+					}
+				});
+			});
+		});
+	}
+
+	function GetMatchID() {
+		connection.query("SELECT game_id FROM game_state WHERE game_ply1_id = ? OR game_ply2_id = ?", [req.session.playerID, req.session.playerID],
+			function (err, rows) {
+				if (err) {
+					res.status(500).json({ message: err });
+					return;
+				}
+				if (rows.length == 0) {
+					res.status(404).json({ message: "Not in a match" });
+					return;
+				}
+				req.session.matchID = rows[0].game_id;
+				GetMatchState();
+			}
+		);
+	}
+
+	if (!req.session.matchID)
+		GetMatchID();
+	else
+		GetMatchState();
 });
  
 app.put("/attack", (req, res) => {
@@ -710,7 +712,7 @@ app.put("/attack", (req, res) => {
     );
 }
 
-    // function DamageAllEnemies()
+
 
     
 
@@ -910,6 +912,7 @@ app.put("/attack", (req, res) => {
                     if (attacker) {
                         console.log("Found attacker:", attacker.player_unit_id, "ATK:", attacker.curr_unit_atk);
                         damage = attacker.curr_unit_atk;
+                        console.log(damage)
 
                     
                     } else {
@@ -919,7 +922,7 @@ app.put("/attack", (req, res) => {
 
             
                     if (attacker.unit_id == 1) {
-                        console.log(`🔁 Ability triggered: Unit ${attacker.player_unit_id} gains 5 HP`);
+                        console.log(` Ability triggered: Unit ${attacker.player_unit_id} gains 5 HP`);
                         IncreaseHP(attacker.player_unit_id, 5);
                     }
 
@@ -969,7 +972,7 @@ app.put("/attack", (req, res) => {
 
 
                     console.log("Applying", damage, "damage to unit", target_id);
-                    MakeDamage(attacker_unit_id, defender_unit_id, target_id, damage);
+                    MakeDamage(attacker.player_unit_id, target_id,target_id, damage);
                     
                     HealAllies(attacker);
                     
@@ -981,7 +984,7 @@ app.put("/attack", (req, res) => {
         });
     }
 
-   function MakeDamage(attacker_unit_id, defender_unit_id, damage) {
+   function MakeDamage(attacker_unit_id, defender_unit_id, target_id, damage) {
     // Step 1: Get attacker's unit_type_id
     connection.query(
         `SELECT u.unit_type_id FROM player_unit pu JOIN unit u ON pu.unit_id = u.unit_id WHERE pu.player_unit_id = ?`,
@@ -999,7 +1002,7 @@ app.put("/attack", (req, res) => {
                 const roll = Math.random(); 
                  console.log(`Crit roll: ${roll}`);
                 if (roll < 0.2) {
-                    damage *= 2;
+                    damage *= 1.5;
                     console.log(" Crit Hit! Damage doubled.");
                 } else {
                  console.log("Not crit!")
@@ -1070,6 +1073,8 @@ app.put("/attack", (req, res) => {
                 function (err, rows, fields) {
                     if (err) return res.status(500).json({ message: err });
 
+                    console.log('--> Dead units for opponent: ' + rows[0].DeadUnits);
+                    console.log('Query executed: SELECT COUNT(*) AS DeadUnits FROM player_unit WHERE player_id = ' + opponentID + ' AND curr_unit_hp <= 0');
                     if (rows[0].DeadUnits === 4) {
                         // All units of the player are dead
                         console.log("--> Player " + opponentID + " has no units left.");
@@ -1096,6 +1101,64 @@ app.put("/attack", (req, res) => {
     
     CheckIfIsPlayerTurn()
 });
+
+app.get("/gameOver", (req, res) => {
+    const playerID = req.session.playerID;
+    var player1ID
+    var player2ID
+
+    function GetPlayerIDS() {
+        connection.query("SELECT game_turn, game_ply1_id, game_ply2_id FROM game_state WHERE game_id = ?", [req.session.matchID], (err, rows) => {
+            if (err) {
+                res.status(500).json({ message: err });
+                return;
+            }
+    
+            if (rows.length === 0) {
+                res.status(404).json({ message: "Game not found" });
+                return;
+            }
+    
+            const currentTurn = rows[0].game_turn;
+            player1ID = rows[0].game_ply1_id;
+            player2ID = rows[0].game_ply2_id;
+
+            CheckGameOver()
+        });
+    }
+
+    function CheckGameOver(){
+            const opponentID = player1ID === req.session.playerID ? player2ID : player1ID;
+
+            connection.query("SELECT COUNT(*) AS DeadUnits FROM player_unit WHERE player_id = ? AND curr_unit_hp <= 0", [opponentID],
+                function (err, rows, fields) {
+                    if (err) return res.status(500).json({ message: err });
+
+                    console.log('--> Dead units for opponent: ' + rows[0].DeadUnits);
+                    console.log('Query executed: SELECT COUNT(*) AS DeadUnits FROM player_unit WHERE player_id = ' + opponentID + ' AND curr_unit_hp <= 0');
+                    if (rows[0].DeadUnits === 4) {
+                        // All units of the player are dead
+                        console.log("--> Player " + opponentID + " has no units left.");
+                        connection.query("UPDATE game_state SET game_state = 1, game_winner = ?, game_loser = ?", [req.session.playerID, opponentID],
+                            function (err, rows, fields) {
+                                if (err) return res.status(500).json({ message: err });
+                                res.json({
+                                    message: "Game Over",
+                                    winner: req.session.playerID,
+                                    loser: opponentID
+                                });  
+                            })
+                    }else{
+                        res.json({
+                            message: "Game Not Finished"
+                        })
+                    }
+                }
+            )
+    }
+
+    GetPlayerIDS()
+})
 
 // Run the server
 app.listen(serverPort, () => {

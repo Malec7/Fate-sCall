@@ -5,6 +5,88 @@
                 "url": "assets/dino.png",
                 "key": "dino",
                 "type": "image"
+            },
+            {
+                "url": "assets/game_background_3.png",
+                "type": "image",
+                "key": "game_background_3"
+            },
+            {
+                "url": "assets/pika.png",
+                "type": "image",
+                "key": "pika"
+            },
+            {
+                "url": "src/prefabs/PrefabHpTag.js",
+                "type": "script",
+                "key": "PrefabHpTag"
+            },
+            {
+                "url": "src/animations/unit 1.json",
+                "type": "animation",
+                "key": "unit 1"
+            },
+            {
+                "url": "assets/Unit_1_attack.png",
+                "frameConfig": {
+                    "frameWidth": 130,
+                    "frameHeight": 130,
+                    "startFrame": 0,
+                    "endFrame": -1,
+                    "spacing": 0,
+                    "margin": 0
+                },
+                "type": "spritesheet",
+                "key": "Unit_1_attack"
+            },
+            {
+                "url": "assets/Unit_1_die.png",
+                "frameConfig": {
+                    "frameWidth": 130,
+                    "frameHeight": 130,
+                    "startFrame": 0,
+                    "endFrame": -1,
+                    "spacing": 0,
+                    "margin": 0
+                },
+                "type": "spritesheet",
+                "key": "Unit_1_die"
+            },
+            {
+                "url": "assets/Unit_1_hurt.png",
+                "frameConfig": {
+                    "frameWidth": 130,
+                    "frameHeight": 130,
+                    "startFrame": 0,
+                    "endFrame": -1,
+                    "spacing": 0,
+                    "margin": 0
+                },
+                "type": "spritesheet",
+                "key": "Unit_1_hurt"
+            },
+            {
+                "url": "assets/Unit_1_idle.png",
+                "frameConfig": {
+                    "frameWidth": 130,
+                    "frameHeight": 130,
+                    "startFrame": 0,
+                    "endFrame": -1,
+                    "spacing": 0,
+                    "margin": 0
+                },
+                "type": "spritesheet",
+                "key": "Unit_1_idle"
+            },
+            {
+                "url": "src/animations/Unit1.json",
+                "type": "animation",
+                "key": "Unit1"
+            },
+            {
+                "url": "src/scenes/UnitPrefab.js",
+                "type": "script",
+                "key": "UnitPrefab"
             }
         ]
     },
@@ -12,6 +94,7 @@
         "app": "Phaser Editor 2D - Asset Pack Editor",
         "contentType": "phasereditor2d.pack.core.AssetContentType",
         "url": "https://phasereditor2d.com",
-        "version": 2
+        "version": 2,
+        "showAllFilesInBlocks": false
     }
 }

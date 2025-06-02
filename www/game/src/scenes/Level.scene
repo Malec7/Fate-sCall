@@ -13,6 +13,19 @@
     },
     "displayList": [
         {
+            "type": "Image",
+            "id": "308678d2-44e0-437c-bf83-7d93aede8f76",
+            "label": "game_background_3",
+            "scope": "PUBLIC",
+            "texture": {
+                "key": "game_background_3"
+            },
+            "x": 646,
+            "y": 351,
+            "scaleX": 0.33820138110542974,
+            "scaleY": 0.34056805027904374
+        },
+        {
             "type": "Container",
             "id": "69910888-11ad-48c0-8a9f-77a6b53cb9d5",
             "label": "player1_characters",
@@ -31,8 +44,8 @@
                     "label": "unit_4",
                     "scope": "PUBLIC",
                     "unitID": 4,
-                    "x": 98,
-                    "y": 381
+                    "x": 136,
+                    "y": 408
                 },
                 {
                     "prefabId": "1a05a1cc-c62f-46c3-b16c-707c36849384",
@@ -45,7 +58,7 @@
                     "label": "unit_3",
                     "scope": "PUBLIC",
                     "unitID": 3,
-                    "x": 288,
+                    "x": 326,
                     "y": 516
                 },
                 {
@@ -59,8 +72,8 @@
                     "label": "unit_2",
                     "scope": "PUBLIC",
                     "unitID": 2,
-                    "x": 288,
-                    "y": 246
+                    "x": 326,
+                    "y": 327
                 },
                 {
                     "prefabId": "1a05a1cc-c62f-46c3-b16c-707c36849384",
@@ -73,8 +86,8 @@
                     "label": "unit_1",
                     "scope": "PUBLIC",
                     "unitID": 1,
-                    "x": 440,
-                    "y": 381
+                    "x": 516,
+                    "y": 408
                 },
                 {
                     "type": "Text",
@@ -107,8 +120,8 @@
                     "label": "unit_5",
                     "scope": "PUBLIC",
                     "unitID": 5,
-                    "x": 1371,
-                    "y": 247
+                    "x": 1257,
+                    "y": 271
                 },
                 {
                     "prefabId": "1a05a1cc-c62f-46c3-b16c-707c36849384",
@@ -121,8 +134,8 @@
                     "label": "unit_6",
                     "scope": "PUBLIC",
                     "unitID": 6,
-                    "x": 1523,
-                    "y": 112
+                    "x": 1447,
+                    "y": 190
                 },
                 {
                     "prefabId": "1a05a1cc-c62f-46c3-b16c-707c36849384",
@@ -135,8 +148,8 @@
                     "label": "unit_8",
                     "scope": "PUBLIC",
                     "unitID": 8,
-                    "x": 1675,
-                    "y": 247
+                    "x": 1599,
+                    "y": 271
                 },
                 {
                     "prefabId": "1a05a1cc-c62f-46c3-b16c-707c36849384",
@@ -149,7 +162,7 @@
                     "label": "unit_7",
                     "scope": "PUBLIC",
                     "unitID": 7,
-                    "x": 1523,
+                    "x": 1447,
                     "y": 379
                 },
                 {
@@ -174,6 +187,35 @@
             "text": "Player",
             "fontFamily": "Arial",
             "fontSize": "25px"
+        },
+        {
+            "type": "Text",
+            "id": "c168d75c-f13a-4ba0-85b7-df3b533a3888",
+            "label": "attackInfo",
+            "scope": "PUBLIC",
+            "x": 114,
+            "y": 27,
+            "scaleX": 0.7261393773832091,
+            "scaleY": 1.5689095425462531,
+            "text": "Selected Attacks:",
+            "fontSize": "20px"
+        },
+        {
+            "type": "Text",
+            "id": "43484581-2560-47c8-8d98-bcad584d9133",
+            "label": "attackButton",
+            "scope": "PUBLIC",
+            "x": 114,
+            "y": 135,
+            "scaleX": 0.6184652628838178,
+            "scaleY": 0.9665653195179874,
+            "text": "Attack!",
+            "paddingLeft": 10,
+            "paddingTop": 5,
+            "paddingRight": 10,
+            "paddingBottom": 5,
+            "fontSize": "24px",
+            "backgroundColor": "#ff0000"
         }
     ],
     "plainObjects": [],

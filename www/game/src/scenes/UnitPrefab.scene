@@ -1,0 +1,88 @@
+{
+    "id": "1a05a1cc-c62f-46c3-b16c-707c36849384",
+    "sceneType": "PREFAB",
+    "settings": {
+        "preloadMethodName": "",
+        "preloadPackFiles": [],
+        "createMethodName": "",
+        "borderWidth": 1280,
+        "borderHeight": 720
+    },
+    "displayList": [
+        {
+            "type": "Container",
+            "id": "eb8a66bc-86ed-4166-9281-ca381e0f321b",
+            "label": "unit1",
+            "scope": "PUBLIC",
+            "hitArea.shape": "RECTANGLE",
+            "hitArea.x": -20.5,
+            "hitArea.y": -16,
+            "hitArea.width": 39,
+            "hitArea.height": 67,
+            "list": [
+                {
+                    "type": "Sprite",
+                    "id": "a2d022b3-1f77-44ad-af6c-eacfef87d1a2",
+                    "label": "sprite",
+                    "scope": "PUBLIC",
+                    "hitArea.shape": "PIXEL_PERFECT",
+                    "texture": {}
+                },
+                {
+                    "prefabId": "22f9e31d-eced-48a6-82e8-813901f4d7bc",
+                    "id": "78049931-a5e3-427d-8397-d80f918e22f2",
+                    "unlock": [
+                        "x",
+                        "y",
+                        "fontFamily"
+                    ],
+                    "label": "hp",
+                    "scope": "PUBLIC",
+                    "x": -1,
+                    "y": 37,
+                    "fontFamily": "Arial"
+                },
+                {
+                    "type": "Text",
+                    "id": "6bb1f578-8de9-4a68-8857-de194becea3a",
+                    "label": "atk",
+                    "scope": "PUBLIC",
+                    "x": -21,
+                    "y": 56,
+                    "text": "ATK: ",
+                    "fontSize": "25px",
+                    "color": "#ff9900"
+                }
+            ]
+        }
+    ],
+    "plainObjects": [],
+    "meta": {
+        "app": "Phaser Editor 2D - Scene Editor",
+        "url": "https://phasereditor2d.com",
+        "contentType": "phasereditor2d.core.scene.SceneContentType",
+        "version": 5
+    },
+    "prefabProperties": [
+        {
+            "name": "isPlayerUnit",
+            "label": "IsPlayerUnit",
+            "tooltip": "",
+            "defValue": false,
+            "customDefinition": false,
+            "type": {
+                "id": "boolean"
+            }
+        },
+        {
+            "name": "unitID",
+            "label": "UnitID",
+            "tooltip": "",
+            "defValue": 0,
+            "customDefinition": false,
+            "type": {
+                "id": "number"
+            }
+        }
+    ]
+}
