@@ -84,7 +84,11 @@ function selectUnit(unitId) {
         if (this.readyState == 4) {
             const data = JSON.parse(this.responseText);
             console.log(data)
+            if (data.message) {
+                alert(data.message);
+            }
             currentSelectedSlot.innerHTML = data.unit_name
+            console.log(data.unit_name)
             currentSelectedSlot.classList.remove("square2selected");
             currentSelectedSlot.classList.add("square2");
             slotSelected = false

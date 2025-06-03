@@ -413,35 +413,57 @@ app.get("/getTeamState", (req, res) => {
 
 app.get("/slot/:slotId/setUnit/:unitId/", (req, res) => {
     if (!req.session.playerID) {
-        return res.json({"message": "Not logged in"})
+        return res.json({"message": "Not logged in"});
     }
 
     const unitId = req.params.unitId;
     const slotId = req.params.slotId;
 
-    console.log("Set unit " + unitId + " on slot " + slotId + " for player" + req.session.playerID)
+    console.log("Set unit " + unitId + " on slot " + slotId + " for player " + req.session.playerID);
 
-    connection.query("SELECT * FROM unit WHERE unit_id = ?", [unitId], (err, rows) => {
+    // connection.query("SELECT * FROM unit WHERE unit_id = ?", [unitId], (err, rows) => {
+    connection.query("SELECT unit_type_id FROM unit WHERE unit_id = ?", [unitId], (err, unitRows) => {
         if (err) {
             return res.status(500).json({ message: err });
         }
-        if (rows.length === 0) {
+        if (unitRows.length === 0) {
             return res.status(404).json({ message: "Unit not found" });
         }
 
-        connection.query("UPDATE player_unit SET unit_id = ? WHERE player_id = ? AND slot_id = ?", [unitId, req.session.playerID, slotId],
-            function (err, rows, fields) {
-                if (err){
-                    console.log(err)
-                }
+        const unitTypeId = unitRows[0].unit_type_id;
 
-                console.log("Affected rows: ", rows.affectedRows);
-            }
-        )
+        if (!isValidUnitSlot(slotId, unitTypeId)) {
+            return res.status(400).json({ message: "This unit type cannot be assigned to the selected slot." });
+        }
 
-        res.status(200).json(rows[0]);
+        connection.query("SELECT unit_id, unit_name FROM unit WHERE unit_id = ?", [unitId], (err, unitRows) => {
+           if (err) {
+               return res.status(500).json({ message: err });
+           }
+           if (unitRows.length === 0) {
+               return res.status(404).json({ message: "Unit not found" });
+           }
+           // Update the player's unit
+           connection.query("UPDATE player_unit SET unit_id = ? WHERE player_id = ? AND slot_id = ?", [unitId, req.session.playerID, slotId], (err, rows) => {
+               if (err) {
+                   console.log(err);
+               }
+               console.log("Affected rows: ", rows.affectedRows);
+               res.status(200).json(unitRows[0]); // Ensure unitRows[0] includes unit_name
+           });
+       });
     });
 });
+
+function isValidUnitSlot(slotID, unitTypeId) {
+    if (slotID == 1) {
+        return unitTypeId == 1;
+    } else if (slotID == 4) {
+        return unitTypeId == 2;
+    } else {
+        return unitTypeId == 3;
+    }
+}
 
 app.get("/setBlessing/:blessingId/", (req, res) => {
     if (!req.session.playerID) {
@@ -473,7 +495,7 @@ app.get("/setBlessing/:blessingId/", (req, res) => {
 });
 
 app.get("/getAvailableUnits", (req, res) => {
-    connection.query("SELECT * FROM unit", (err, units) => {
+    connection.query("SELECT unit_id, unit_name FROM unit", (err, units) => {
         if (err) {
             return res.status(500).json({ message: err.message });
         }

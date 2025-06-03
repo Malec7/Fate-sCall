@@ -74,24 +74,36 @@ class Level extends Phaser.Scene {
 		player2_characters.add(player2);
 
 		// turn
-		const turn = this.add.text(570, 81, "", {});
+		const turn = this.add.text(570, 27, "", {});
 		turn.text = "Player";
 		turn.setStyle({ "fontFamily": "Arial", "fontSize": "25px" });
 
 		// attackInfo
-		const attackInfo = this.add.text(114, 27, "", {});
+		const attackInfo = this.add.text(570, 81, "", {});
 		attackInfo.scaleX = 0.7261393773832091;
-		attackInfo.scaleY = 1.5689095425462531;
+		attackInfo.scaleY = 1.379303707157483;
 		attackInfo.text = "Selected Attacks:";
-		attackInfo.setStyle({ "fontSize": "20px" });
+		attackInfo.setStyle({ "backgroundColor": "", "fontSize": "20px", "fontStyle": "bold" });
 
 		// attackButton
-		const attackButton = this.add.text(114, 135, "", {});
+		const attackButton = this.add.text(570, 162, "", {});
 		attackButton.scaleX = 0.6184652628838178;
 		attackButton.scaleY = 0.9665653195179874;
 		attackButton.text = "Attack!";
-		attackButton.setStyle({ "backgroundColor": "#ff0000", "fontSize": "24px" });
+		attackButton.setStyle({ "backgroundColor": "#ff0000", "fontSize": "24px", "fontStyle": "bold" });
 		attackButton.setPadding({"left":10,"top":5,"right":10,"bottom":5});
+
+		// player1_user
+		const player1_user = this.add.text(38, 27, "", {});
+		player1_user.scaleY = 2;
+		player1_user.text = "P1\n";
+		player1_user.setStyle({ "fontStyle": "bold" });
+
+		// player2_user
+		const player2_user = this.add.text(1070, 27, "", {});
+		player2_user.scaleY = 2;
+		player2_user.text = "P2\n";
+		player2_user.setStyle({ "fontStyle": "bold" });
 
 		// unit_4 (prefab fields)
 		unit_4.unitID = 4;
@@ -133,6 +145,8 @@ class Level extends Phaser.Scene {
 		this.turn = turn;
 		this.attackInfo = attackInfo;
 		this.attackButton = attackButton;
+		this.player1_user = player1_user;
+		this.player2_user = player2_user;
 
 		this.events.emit("scene-awake");
 	}
@@ -169,6 +183,10 @@ class Level extends Phaser.Scene {
 	attackInfo;
 	/** @type {Phaser.GameObjects.Text} */
 	attackButton;
+	/** @type {Phaser.GameObjects.Text} */
+	player1_user;
+	/** @type {Phaser.GameObjects.Text} */
+	player2_user;
 
 	/* START-USER-CODE */
 
@@ -283,6 +301,9 @@ GetMatchState() {
 				this.UpdateMatchUI(gameState);
 				this.currentMatchState = gameState;
 
+			this.player1_user.setText(`Player 1: ${gameState.player1_username}`);
+	        this.player2_user.setText(`Player 2: ${gameState.player2_username}`);
+
 				if (gameState.game_status === 1) {
 
 					const winnerId = gameState.game_winner;
@@ -312,7 +333,7 @@ UpdateMatchUI(gameState) {
 		var container = this.player1_characters.list[slotID]
 		var characterSprite = container.list[0]
 		var characterText = container.list[1]
-
+		
 	 const animKey = `Unit_${unit.unit_id}_Idle`;
      if (this.anims.exists(animKey)) {
 		characterSprite.play(animKey);

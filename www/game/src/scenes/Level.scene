@@ -183,7 +183,7 @@
             "label": "turn",
             "scope": "PUBLIC",
             "x": 570,
-            "y": 81,
+            "y": 27,
             "text": "Player",
             "fontFamily": "Arial",
             "fontSize": "25px"
@@ -193,20 +193,22 @@
             "id": "c168d75c-f13a-4ba0-85b7-df3b533a3888",
             "label": "attackInfo",
             "scope": "PUBLIC",
-            "x": 114,
-            "y": 27,
+            "x": 570,
+            "y": 81,
             "scaleX": 0.7261393773832091,
-            "scaleY": 1.5689095425462531,
+            "scaleY": 1.379303707157483,
             "text": "Selected Attacks:",
-            "fontSize": "20px"
+            "fontSize": "20px",
+            "fontStyle": "bold",
+            "backgroundColor": ""
         },
         {
             "type": "Text",
             "id": "43484581-2560-47c8-8d98-bcad584d9133",
             "label": "attackButton",
             "scope": "PUBLIC",
-            "x": 114,
-            "y": 135,
+            "x": 570,
+            "y": 162,
             "scaleX": 0.6184652628838178,
             "scaleY": 0.9665653195179874,
             "text": "Attack!",
@@ -215,7 +217,30 @@
             "paddingRight": 10,
             "paddingBottom": 5,
             "fontSize": "24px",
+            "fontStyle": "bold",
             "backgroundColor": "#ff0000"
+        },
+        {
+            "type": "Text",
+            "id": "e159b049-0299-4578-b4e2-d4fe846aaea8",
+            "label": "player1_user",
+            "scope": "PUBLIC",
+            "x": 38,
+            "y": 27,
+            "scaleY": 2,
+            "text": "P1\n",
+            "fontStyle": "bold"
+        },
+        {
+            "type": "Text",
+            "id": "821ae356-0341-46e3-bf7f-8cbc34e1b702",
+            "label": "player2_user",
+            "scope": "PUBLIC",
+            "x": 1070,
+            "y": 27,
+            "scaleY": 2,
+            "text": "P2\n",
+            "fontStyle": "bold"
         }
     ],
     "plainObjects": [],
