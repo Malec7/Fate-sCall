@@ -47,10 +47,10 @@ function GetCurrentTeam() {
           console.log(slotID);
             const element = document.getElementById(slotID);
             console.log(element)
-            element.innerHTML = unit.unit_name;
+            element.innerHTML =`<img src="./Img/units/${unit.unit_id}.png" alt="${unit.unit_name}"  style="width: 100%; height: 100%; object-fit: cover;" />`;
         });
 
-        document.getElementById("bigsqr").innerHTML = data.blessing.blessing_name;
+        document.getElementById("bigsqr").innerHTML = `<img src="./Img/blessings/b${data.blessing.blessing_id}.png" alt="${data.blessing.blessing_name}"style="width: 100%; height: 100%; object-fit: cover;" />`;
     }
   };
 

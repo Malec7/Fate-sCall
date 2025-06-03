@@ -20,11 +20,12 @@ function GetTeamState() {
             if (this.status == 200) {
                 document.getElementById("username").innerHTML = "username: " + data.username
                 document.getElementById("history").innerHTML = "match history: " + data.history
-                document.getElementById("bigsqr").value = data.blessing
+                document.getElementById("bigsqr").innerHTML = `<img src="./Img/blessings/b${data.blessing.blessing_id}.png"  alt="${data.blessing.blessing_name}" style="width: 100%; height: 100%; object-fit: cover;" />`;
 
                 data.units.forEach(unit => {
                     var element = document.getElementById("slot" + unit.slot_id)
-                    element.innerHTML = unit.unit_name
+                    element.innerHTML = `<img src="./Img/units/${unit.unit_id}.png" alt="${unit.unit_name}"  style="width: 100%; height: 100%; object-fit: cover;" />`;
+                    
                 })
             }
         }
@@ -43,7 +44,7 @@ function selectBlessing(blessingId){
             console.log(data)
 
             const blessingName = data.blessing_name
-            document.getElementById("bigsqr").value = blessingName
+            document.getElementById("bigsqr").innerHTML = `<img src="./Img/blessings/b${blessingId}.png"alt="${blessingName}"style="width: 100%; height: 100%; object-fit: cover;" />`;
             // if (this.status == 200) {
             //     var unitData = JSON.parse(this.responseText);
             //     var unitName = unitData.unit_name;
@@ -87,7 +88,7 @@ function selectUnit(unitId) {
             if (data.message) {
                 alert(data.message);
             }
-            currentSelectedSlot.innerHTML = data.unit_name
+            currentSelectedSlot.innerHTML = ` <img src="./Img/units/${data.unit_id}.png" alt="${data.unit_name}" style="width: 100%; height: 100%; object-fit: cover;" />`;
             console.log(data.unit_name)
             currentSelectedSlot.classList.remove("square2selected");
             currentSelectedSlot.classList.add("square2");

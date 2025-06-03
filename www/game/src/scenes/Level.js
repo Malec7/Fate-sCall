@@ -288,6 +288,8 @@ GetMatchState() {
 	request.onreadystatechange = () => {
 		if (request.readyState == 4) {
 			var data = JSON.parse(request.responseText);
+			console.log("data--------")
+			console.log(data)
 
 			if (request.status == 401) {
 				window.location.href = "/login.html";
