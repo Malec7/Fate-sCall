@@ -333,7 +333,7 @@ UpdateMatchUI(gameState) {
 		var container = this.player1_characters.list[slotID]
 		var characterSprite = container.list[0]
 		var characterText = container.list[1]
-		
+
 	 const animKey = `Unit_${unit.unit_id}_Idle`;
      if (this.anims.exists(animKey)) {
 		characterSprite.play(animKey);

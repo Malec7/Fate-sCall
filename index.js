@@ -508,23 +508,6 @@ app.get("/getAvailableUnits", (req, res) => {
     });
 });
 
-//   function Applylessings(playerIDs, callback) {
-//     connection.query(`SELECT pb.player_id, b.blessing_atk, b.blessing_hp, b.blessing_heal FROM player_blessing pb JOIN blessing b ON pb.blessing_id = b.blessing_id WHERE pb.player_id IN (?, ?)`, playerIDs,
-//         (err, rows) => {
-//             if (err) return callback(err);
-//             const blessings = {
-//                 [playerIDs[0]]: { atk: 0, hp: 0, heal: 0 },
-//                 [playerIDs[1]]: { atk: 0, hp: 0, heal: 0 }
-//             };
-//             rows.forEach(row => {
-//                 blessings[row.player_id].atk += row.blessing_atk;
-//                 blessings[row.player_id].hp += row.blessing_hp;
-//                 blessings[row.player_id].heal += row.blessing_heal;
-//             });
-//             callback(null, blessings);
-//         }
-//     );
-// }
 
 app.get("/getMatchState", (req, res) => {
 	if (!req.session.username) {
@@ -831,35 +814,7 @@ app.put("/attack", (req, res) => {
 
     }
 
-      
-//     function CritHit (attacker) {
-//      let baseDamage = attacker.curr_unit_atk
-//       connection.query(`SELECT unit_type_id FROM unit WHERE unit_id = ?`, [attacker.unit_id], (err, results) => {
-//         if (err || results.length === 0) {
-//             console.log("Error fetching unit_type_id:", err);
-//             return;
-//         }
-
-//         const unitTypeId2 = results[0].unit_type_id;
-
-//         if (unitTypeId2 !== 3) {
-//             console.log("Unit is not a DD.");
-//             return;
-//         }
-      
-//          let critRate = Math.floor(Math.random() * 10)
-
-//          if (critRate <= 9) { 
-//             baseDamage *=2;
-//             console.log(`Crit is triggered! Target had ${targetHP} HP. Damage doubled to ${finalDamage}.`);
-//             } else {
-//                 console.log(`Not crit`);
-//             }
-
-//         }
-
-//       );
-//  }
+    
 
 
     function HealAllies(attacker) {
@@ -966,7 +921,7 @@ app.put("/attack", (req, res) => {
                         ExecuteAttack(attacker, target_id)
                     }
 
-                    else if (attacker.unit_id == 12  && attacker.curr_unit_hp<25) {
+                    else if (attacker.unit_id == 12  && attacker.curr_unit_hp<30) {
                          SurvivalInstict(attacker.player_unit_id, 5)
 
                      }
@@ -990,7 +945,7 @@ app.put("/attack", (req, res) => {
                         ExtraDamage(target_id, extra); 
                     }
 
-                    // else if (attacker.unit_id == 11)
+                    
 
 
                     console.log("Applying", damage, "damage to unit", target_id);
@@ -1023,7 +978,7 @@ app.put("/attack", (req, res) => {
             if (unit_type_id === 3) {
                 const roll = Math.random(); 
                  console.log(`Crit roll: ${roll}`);
-                if (roll < 0.2) {
+                if (roll < 0.1) {
                     damage *= 1.5;
                     console.log(" Crit Hit! Damage doubled.");
                 } else {

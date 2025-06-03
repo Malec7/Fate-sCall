@@ -27,49 +27,10 @@
                 "key": "unit 1"
             },
             {
-                "url": "assets/Unit_1_attack.png",
-                "frameConfig": {
-                    "frameWidth": 130,
-                    "frameHeight": 130,
-                    "startFrame": 0,
-                    "endFrame": -1,
-                    "spacing": 0,
-                    "margin": 0
-                },
-                "type": "spritesheet",
-                "key": "Unit_1_attack"
-            },
-            {
-                "url": "assets/Unit_1_die.png",
-                "frameConfig": {
-                    "frameWidth": 130,
-                    "frameHeight": 130,
-                    "startFrame": 0,
-                    "endFrame": -1,
-                    "spacing": 0,
-                    "margin": 0
-                },
-                "type": "spritesheet",
-                "key": "Unit_1_die"
-            },
-            {
-                "url": "assets/Unit_1_hurt.png",
-                "frameConfig": {
-                    "frameWidth": 130,
-                    "frameHeight": 130,
-                    "startFrame": 0,
-                    "endFrame": -1,
-                    "spacing": 0,
-                    "margin": 0
-                },
-                "type": "spritesheet",
-                "key": "Unit_1_hurt"
-            },
-            {
                 "url": "assets/Unit_1_idle.png",
                 "frameConfig": {
-                    "frameWidth": 130,
-                    "frameHeight": 130,
+                    "frameWidth": 128,
+                    "frameHeight": 128,
                     "startFrame": 0,
                     "endFrame": -1,
                     "spacing": 0,

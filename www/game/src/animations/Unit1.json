@@ -1,7 +1,7 @@
 {
     "anims": [
         {
-            "key": "Unit_1_Idle",
+            "key": "Unit_1_idle",
             "type": "frame",
             "frames": [
                 {
@@ -55,6 +55,12 @@
                 {
                     "key": "Unit_1_idle",
                     "frame": 8,
+                    "duration": 0,
+                    "keyframe": false
+                },
+                {
+                    "key": "Unit_1_idle",
+                    "frame": 9,
                     "duration": 0,
                     "keyframe": false
                 }
