@@ -2,6 +2,13 @@
     "section1": {
         "files": [
             {
+                "url": [
+                    "assets/arena_music.mp3"
+                ],
+                "type": "audio",
+                "key": "arena_music"
+            },
+            {
                 "url": "assets/dino.png",
                 "key": "dino",
                 "type": "image"
@@ -22,11 +29,6 @@
                 "key": "PrefabHpTag"
             },
             {
-                "url": "src/animations/unit 1.json",
-                "type": "animation",
-                "key": "unit 1"
-            },
-            {
                 "url": "assets/Unit_1_attack.png",
                 "frameConfig": {
                     "frameWidth": 128,
@@ -37,10 +39,10 @@
                     "margin": 0
                 },
                 "type": "spritesheet",
-                "key": "Unit_2_attack"
+                "key": "Unit_1_attack"
             },
             {
-                "url": "assets/Unit_1_die.png",
+                "url": "assets/Unit_1_dead.png",
                 "frameConfig": {
                     "frameWidth": 128,
                     "frameHeight": 128,
@@ -50,7 +52,7 @@
                     "margin": 0
                 },
                 "type": "spritesheet",
-                "key": "Unit_2_die"
+                "key": "Unit_1_dead"
             },
             {
                 "url": "assets/Unit_1_hurt.png",
@@ -63,7 +65,7 @@
                     "margin": 0
                 },
                 "type": "spritesheet",
-                "key": "Unit_2_hurt"
+                "key": "Unit_1_hurt"
             },
             {
                 "url": "assets/Unit_1_idle.png",
@@ -76,12 +78,582 @@
                     "margin": 0
                 },
                 "type": "spritesheet",
+                "key": "Unit_1_idle"
+            },
+            {
+                "url": "assets/Unit_10_attack.png",
+                "frameConfig": {
+                    "frameWidth": 128,
+                    "frameHeight": 128,
+                    "startFrame": 0,
+                    "endFrame": -1,
+                    "spacing": 0,
+                    "margin": 0
+                },
+                "type": "spritesheet",
+                "key": "Unit_10_attack"
+            },
+            {
+                "url": "assets/Unit_10_dead.png",
+                "frameConfig": {
+                    "frameWidth": 128,
+                    "frameHeight": 128,
+                    "startFrame": 0,
+                    "endFrame": -1,
+                    "spacing": 0,
+                    "margin": 0
+                },
+                "type": "spritesheet",
+                "key": "Unit_10_dead"
+            },
+            {
+                "url": "assets/Unit_10_hurt.png",
+                "frameConfig": {
+                    "frameWidth": 128,
+                    "frameHeight": 128,
+                    "startFrame": 0,
+                    "endFrame": -1,
+                    "spacing": 0,
+                    "margin": 0
+                },
+                "type": "spritesheet",
+                "key": "Unit_10_hurt"
+            },
+            {
+                "url": "assets/Unit_10_idle.png",
+                "frameConfig": {
+                    "frameWidth": 128,
+                    "frameHeight": 128,
+                    "startFrame": 0,
+                    "endFrame": -1,
+                    "spacing": 0,
+                    "margin": 0
+                },
+                "type": "spritesheet",
+                "key": "Unit_10_idle"
+            },
+            {
+                "url": "assets/Unit_11_attack.png",
+                "frameConfig": {
+                    "frameWidth": 128,
+                    "frameHeight": 128,
+                    "startFrame": 0,
+                    "endFrame": -1,
+                    "spacing": 0,
+                    "margin": 0
+                },
+                "type": "spritesheet",
+                "key": "Unit_11_attack"
+            },
+            {
+                "url": "assets/Unit_11_dead.png",
+                "frameConfig": {
+                    "frameWidth": 128,
+                    "frameHeight": 128,
+                    "startFrame": 0,
+                    "endFrame": -1,
+                    "spacing": 0,
+                    "margin": 0
+                },
+                "type": "spritesheet",
+                "key": "Unit_11_dead"
+            },
+            {
+                "url": "assets/Unit_11_hurt.png",
+                "frameConfig": {
+                    "frameWidth": 128,
+                    "frameHeight": 128,
+                    "startFrame": 0,
+                    "endFrame": -1,
+                    "spacing": 0,
+                    "margin": 0
+                },
+                "type": "spritesheet",
+                "key": "Unit_11_hurt"
+            },
+            {
+                "url": "assets/Unit_11_idle.png",
+                "frameConfig": {
+                    "frameWidth": 128,
+                    "frameHeight": 128,
+                    "startFrame": 0,
+                    "endFrame": -1,
+                    "spacing": 0,
+                    "margin": 0
+                },
+                "type": "spritesheet",
+                "key": "Unit_11_idle"
+            },
+            {
+                "url": "assets/Unit_2_attack.png",
+                "frameConfig": {
+                    "frameWidth": 128,
+                    "frameHeight": 128,
+                    "startFrame": 0,
+                    "endFrame": -1,
+                    "spacing": 0,
+                    "margin": 0
+                },
+                "type": "spritesheet",
+                "key": "Unit_2_attack"
+            },
+            {
+                "url": "assets/Unit_2_die.png",
+                "frameConfig": {
+                    "frameWidth": 128,
+                    "frameHeight": 128,
+                    "startFrame": 0,
+                    "endFrame": -1,
+                    "spacing": 0,
+                    "margin": 0
+                },
+                "type": "spritesheet",
+                "key": "Unit_2_die"
+            },
+            {
+                "url": "assets/Unit_2_hurt.png",
+                "frameConfig": {
+                    "frameWidth": 128,
+                    "frameHeight": 128,
+                    "startFrame": 0,
+                    "endFrame": -1,
+                    "spacing": 0,
+                    "margin": 0
+                },
+                "type": "spritesheet",
+                "key": "Unit_2_hurt"
+            },
+            {
+                "url": "assets/Unit_2_idle.png",
+                "frameConfig": {
+                    "frameWidth": 128,
+                    "frameHeight": 128,
+                    "startFrame": 0,
+                    "endFrame": -1,
+                    "spacing": 0,
+                    "margin": 0
+                },
+                "type": "spritesheet",
                 "key": "Unit_2_idle"
+            },
+            {
+                "url": "assets/Unit_3_attack.png",
+                "frameConfig": {
+                    "frameWidth": 96,
+                    "frameHeight": 96,
+                    "startFrame": 0,
+                    "endFrame": -1,
+                    "spacing": 0,
+                    "margin": 0
+                },
+                "type": "spritesheet",
+                "key": "Unit_3_attack"
+            },
+            {
+                "url": "assets/Unit_3_dead.png",
+                "frameConfig": {
+                    "frameWidth": 96,
+                    "frameHeight": 96,
+                    "startFrame": 0,
+                    "endFrame": -1,
+                    "spacing": 0,
+                    "margin": 0
+                },
+                "type": "spritesheet",
+                "key": "Unit_3_dead"
+            },
+            {
+                "url": "assets/Unit_3_hurt.png",
+                "frameConfig": {
+                    "frameWidth": 96,
+                    "frameHeight": 96,
+                    "startFrame": 0,
+                    "endFrame": -1,
+                    "spacing": 0,
+                    "margin": 0
+                },
+                "type": "spritesheet",
+                "key": "Unit_3_hurt"
+            },
+            {
+                "url": "assets/Unit_3_idle.png",
+                "frameConfig": {
+                    "frameWidth": 96,
+                    "frameHeight": 96,
+                    "startFrame": 0,
+                    "endFrame": -1,
+                    "spacing": 0,
+                    "margin": 0
+                },
+                "type": "spritesheet",
+                "key": "Unit_3_idle"
+            },
+            {
+                "url": "assets/Unit_4_attack.png",
+                "frameConfig": {
+                    "frameWidth": 128,
+                    "frameHeight": 128,
+                    "startFrame": 0,
+                    "endFrame": -1,
+                    "spacing": 0,
+                    "margin": 0
+                },
+                "type": "spritesheet",
+                "key": "Unit_4_attack"
+            },
+            {
+                "url": "assets/Unit_4_dead.png",
+                "frameConfig": {
+                    "frameWidth": 128,
+                    "frameHeight": 128,
+                    "startFrame": 0,
+                    "endFrame": -1,
+                    "spacing": 0,
+                    "margin": 0
+                },
+                "type": "spritesheet",
+                "key": "Unit_4_dead"
+            },
+            {
+                "url": "assets/Unit_4_hurt.png",
+                "frameConfig": {
+                    "frameWidth": 128,
+                    "frameHeight": 128,
+                    "startFrame": 0,
+                    "endFrame": -1,
+                    "spacing": 0,
+                    "margin": 0
+                },
+                "type": "spritesheet",
+                "key": "Unit_4_hurt"
+            },
+            {
+                "url": "assets/Unit_4_idle.png",
+                "frameConfig": {
+                    "frameWidth": 128,
+                    "frameHeight": 128,
+                    "startFrame": 0,
+                    "endFrame": -1,
+                    "spacing": 0,
+                    "margin": 0
+                },
+                "type": "spritesheet",
+                "key": "Unit_4_idle"
+            },
+            {
+                "url": "assets/Unit_5_attack.png",
+                "frameConfig": {
+                    "frameWidth": 128,
+                    "frameHeight": 128,
+                    "startFrame": 0,
+                    "endFrame": -1,
+                    "spacing": 0,
+                    "margin": 0
+                },
+                "type": "spritesheet",
+                "key": "Unit_5_attack"
+            },
+            {
+                "url": "assets/Unit_5_dead.png",
+                "frameConfig": {
+                    "frameWidth": 128,
+                    "frameHeight": 128,
+                    "startFrame": 0,
+                    "endFrame": -1,
+                    "spacing": 0,
+                    "margin": 0
+                },
+                "type": "spritesheet",
+                "key": "Unit_5_dead"
+            },
+            {
+                "url": "assets/Unit_5_hurt.png",
+                "frameConfig": {
+                    "frameWidth": 128,
+                    "frameHeight": 128,
+                    "startFrame": 0,
+                    "endFrame": -1,
+                    "spacing": 0,
+                    "margin": 0
+                },
+                "type": "spritesheet",
+                "key": "Unit_5_hurt"
+            },
+            {
+                "url": "assets/Unit_5_idle.png",
+                "frameConfig": {
+                    "frameWidth": 128,
+                    "frameHeight": 128,
+                    "startFrame": 0,
+                    "endFrame": -1,
+                    "spacing": 0,
+                    "margin": 0
+                },
+                "type": "spritesheet",
+                "key": "Unit_5_idle"
+            },
+            {
+                "url": "assets/Unit_6_attack.png",
+                "frameConfig": {
+                    "frameWidth": 128,
+                    "frameHeight": 128,
+                    "startFrame": 0,
+                    "endFrame": -1,
+                    "spacing": 0,
+                    "margin": 0
+                },
+                "type": "spritesheet",
+                "key": "Unit_6_attack"
+            },
+            {
+                "url": "assets/Unit_6_dead.png",
+                "frameConfig": {
+                    "frameWidth": 128,
+                    "frameHeight": 128,
+                    "startFrame": 0,
+                    "endFrame": -1,
+                    "spacing": 0,
+                    "margin": 0
+                },
+                "type": "spritesheet",
+                "key": "Unit_6_dead"
+            },
+            {
+                "url": "assets/Unit_6_hurt.png",
+                "frameConfig": {
+                    "frameWidth": 128,
+                    "frameHeight": 128,
+                    "startFrame": 0,
+                    "endFrame": -1,
+                    "spacing": 0,
+                    "margin": 0
+                },
+                "type": "spritesheet",
+                "key": "Unit_6_hurt"
+            },
+            {
+                "url": "assets/Unit_6_idle.png",
+                "frameConfig": {
+                    "frameWidth": 128,
+                    "frameHeight": 128,
+                    "startFrame": 0,
+                    "endFrame": -1,
+                    "spacing": 0,
+                    "margin": 0
+                },
+                "type": "spritesheet",
+                "key": "Unit_6_idle"
+            },
+            {
+                "url": "assets/Unit_7_attack.png",
+                "frameConfig": {
+                    "frameWidth": 128,
+                    "frameHeight": 128,
+                    "startFrame": 0,
+                    "endFrame": -1,
+                    "spacing": 0,
+                    "margin": 0
+                },
+                "type": "spritesheet",
+                "key": "Unit_7_attack"
+            },
+            {
+                "url": "assets/Unit_7_dead.png",
+                "frameConfig": {
+                    "frameWidth": 128,
+                    "frameHeight": 128,
+                    "startFrame": 0,
+                    "endFrame": -1,
+                    "spacing": 0,
+                    "margin": 0
+                },
+                "type": "spritesheet",
+                "key": "Unit_7_dead"
+            },
+            {
+                "url": "assets/Unit_7_hurt.png",
+                "frameConfig": {
+                    "frameWidth": 128,
+                    "frameHeight": 128,
+                    "startFrame": 0,
+                    "endFrame": -1,
+                    "spacing": 0,
+                    "margin": 0
+                },
+                "type": "spritesheet",
+                "key": "Unit_7_hurt"
+            },
+            {
+                "url": "assets/Unit_7_idle.png",
+                "frameConfig": {
+                    "frameWidth": 128,
+                    "frameHeight": 128,
+                    "startFrame": 0,
+                    "endFrame": -1,
+                    "spacing": 0,
+                    "margin": 0
+                },
+                "type": "spritesheet",
+                "key": "Unit_7_idle"
+            },
+            {
+                "url": "assets/Unit_8_attack.png",
+                "frameConfig": {
+                    "frameWidth": 128,
+                    "frameHeight": 128,
+                    "startFrame": 0,
+                    "endFrame": -1,
+                    "spacing": 0,
+                    "margin": 0
+                },
+                "type": "spritesheet",
+                "key": "Unit_8_attack"
+            },
+            {
+                "url": "assets/Unit_8_dead.png",
+                "frameConfig": {
+                    "frameWidth": 128,
+                    "frameHeight": 128,
+                    "startFrame": 0,
+                    "endFrame": -1,
+                    "spacing": 0,
+                    "margin": 0
+                },
+                "type": "spritesheet",
+                "key": "Unit_8_dead"
+            },
+            {
+                "url": "assets/Unit_8_hurt.png",
+                "frameConfig": {
+                    "frameWidth": 128,
+                    "frameHeight": 128,
+                    "startFrame": 0,
+                    "endFrame": -1,
+                    "spacing": 0,
+                    "margin": 0
+                },
+                "type": "spritesheet",
+                "key": "Unit_8_hurt"
+            },
+            {
+                "url": "assets/Unit_8_idle.png",
+                "frameConfig": {
+                    "frameWidth": 128,
+                    "frameHeight": 128,
+                    "startFrame": 0,
+                    "endFrame": -1,
+                    "spacing": 0,
+                    "margin": 0
+                },
+                "type": "spritesheet",
+                "key": "Unit_8_idle"
+            },
+            {
+                "url": "assets/Unit_9_attack.png",
+                "frameConfig": {
+                    "frameWidth": 128,
+                    "frameHeight": 128,
+                    "startFrame": 0,
+                    "endFrame": -1,
+                    "spacing": 0,
+                    "margin": 0
+                },
+                "type": "spritesheet",
+                "key": "Unit_9_attack"
+            },
+            {
+                "url": "assets/Unit_9_dead.png",
+                "frameConfig": {
+                    "frameWidth": 128,
+                    "frameHeight": 128,
+                    "startFrame": 0,
+                    "endFrame": -1,
+                    "spacing": 0,
+                    "margin": 0
+                },
+                "type": "spritesheet",
+                "key": "Unit_9_dead"
+            },
+            {
+                "url": "assets/Unit_9_hurt.png",
+                "frameConfig": {
+                    "frameWidth": 128,
+                    "frameHeight": 128,
+                    "startFrame": 0,
+                    "endFrame": -1,
+                    "spacing": 0,
+                    "margin": 0
+                },
+                "type": "spritesheet",
+                "key": "Unit_9_hurt"
+            },
+            {
+                "url": "assets/Unit_9_idle.png",
+                "frameConfig": {
+                    "frameWidth": 128,
+                    "frameHeight": 128,
+                    "startFrame": 0,
+                    "endFrame": -1,
+                    "spacing": 0,
+                    "margin": 0
+                },
+                "type": "spritesheet",
+                "key": "Unit_9_idle"
             },
             {
                 "url": "src/animations/Unit1.json",
                 "type": "animation",
                 "key": "Unit1"
+            },
+            {
+                "url": "src/animations/Unit10.json",
+                "type": "animation",
+                "key": "Unit10"
+            },
+            {
+                "url": "src/animations/Unit11.json",
+                "type": "animation",
+                "key": "Unit11"
+            },
+            {
+                "url": "src/animations/Unit2.json",
+                "type": "animation",
+                "key": "Unit2"
+            },
+            {
+                "url": "src/animations/Unit3.json",
+                "type": "animation",
+                "key": "Unit3"
+            },
+            {
+                "url": "src/animations/Unit4.json",
+                "type": "animation",
+                "key": "Unit4"
+            },
+            {
+                "url": "src/animations/Unit5.json",
+                "type": "animation",
+                "key": "Unit5"
+            },
+            {
+                "url": "src/animations/Unit6.json",
+                "type": "animation",
+                "key": "Unit6"
+            },
+            {
+                "url": "src/animations/Unit7.json",
+                "type": "animation",
+                "key": "Unit7"
+            },
+            {
+                "url": "src/animations/Unit8.json",
+                "type": "animation",
+                "key": "Unit8"
+            },
+            {
+                "url": "src/animations/Unit9.json",
+                "type": "animation",
+                "key": "Unit9"
             },
             {
                 "url": "src/scenes/UnitPrefab.js",

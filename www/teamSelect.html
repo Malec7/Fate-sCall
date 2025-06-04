@@ -9,12 +9,32 @@
 </head>
 <body>
 
-    <h1>Team Selection</h1>
+  <audio id="bgMusic" autoplay loop>
+  <source src="./audio/menus_music.mp3" type="audio/mpeg">
+  Your browser does not support the audio element.
+  </audio>
+
+ <audio id="clickSound" preload="auto">
+<source src="./audio/button_sound.mp3" type="audio/mpeg">
+</audio>
+
+<style>
+  body {
+    background-image: url('./Img/background/background2.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 140vh;
+    margin: 0;
+  }
+</style>
+
+ <h2 class="section-title">Team Selection</h2>
 
 <div class="container">
   <div class="left-side">
-    <div id="username">username</div>
-    <div id="history">match history</div>
+    <div id="username" class="username">Username</div>
+    <div id="history" class="username">Team</div>
     <div class="square-group2">
       <div class="row2">
         <div type="text" id="slot2" class="square2" onclick="SelectSlot(this, 2)"></div>
@@ -24,98 +44,123 @@
         <div type="text" id="slot4" class="square2" onclick="SelectSlot(this, 4)"></div>
         <div type="text" id="slot1" class="square2" onclick="SelectSlot(this, 1)"></div>
       </div>
-      <div class="row">
+      <div class="row2">
         <div type="text" id="slot3" class="square2" onclick="SelectSlot(this, 3)"></div>
       </div>
     </div>
   </div>
   <div class="right-side">
-    <div class="row">Blessings
-       <div id="blessing1" onclick="selectBlessing(1)"
-     style="width: 100px; height: 100px; border: 1px solid white; display: inline-block; overflow: hidden;">
-  <img src="./Img/blessings/b1.png" alt="Blessing 1"
-       style="width: 100%; height: 100%; object-fit: cover;" />
+<div class="row">Blessings
+  <div id="blessing1" class="card" onclick="selectBlessing(1)"
+     onmouseover="showPreview('./Img/blessings/b1.png', event)"
+     onmouseout="hidePreview()">
+    <img src="./Img/blessings/b1.png" alt="Wrath of War">
+    <div class="card-label">Wrath of War</div>
+  </div>
+  <div id="blessing2" class="card" onclick="selectBlessing(2)"
+      onmouseover="showPreview('./Img/blessings/b2.png', event)"
+     onmouseout="hidePreview()">
+    <img src="./Img/blessings/b2.png" alt="Waters of Life">
+    <div class="card-label">Waters of Life</div>
+  </div>
+  <div id="blessing3" class="card" onclick="selectBlessing(3)"
+      onmouseover="showPreview('./Img/blessings/b3.png', event)"
+     onmouseout="hidePreview()">
+    <img src="./Img/blessings/b3.png" alt="Dance of the Blades">
+    <div class="card-label">Dance of the Blades</div>
+  </div>
+  <div id="blessing4" class="card" onclick="selectBlessing(4)"
+     onmouseover="showPreview('./Img/blessings/b4.png', event)"
+     onmouseout="hidePreview()">
+    <img src="./Img/blessings/b4.png" alt="Sides of the Moon">
+    <div class="card-label">Sides of the Moon</div>
+  </div>
 </div>
-        <div id="blessing2" onclick="selectBlessing(2)"
-     style="width: 100px; height: 100px; border: 1px solid white; display: inline-block; overflow: hidden;">
-  <img src="./Img/blessings/b2.png" alt="Blessing 2"
-       style="width: 100%; height: 100%; object-fit: cover;" />
+    <div class="row">Damage
+     <div id="sqr5" class="card" onclick="selectUnit(7)"
+     onmouseover="showPreview('./Img/units/7.png', event)"
+     onmouseout="hidePreview()">
+  <img src="./Img/units/7.png" alt="Empress of Languages">
+  <div class="card-label">The Empress of Languages</div>
 </div>
-       <div id="blessing3" onclick="selectBlessing(3)"
-     style="width: 100px; height: 100px; border: 1px solid white; display: inline-block; overflow: hidden;">
-  <img src="./Img/blessings/b3.png" alt="Blessing 3"
-       style="width: 100%; height: 100%; object-fit: cover;" />
+      <div id="sqr6" class="card" onclick="selectUnit(8)"
+     onmouseover="showPreview('./Img/units/8.png', event)"
+     onmouseout="hidePreview()">
+  <img src="./Img/units/8.png" alt="Chef of Beauty">
+  <div class="card-label">The Chef of Beauty</div>
 </div>
-        <div id="blessing4" onclick="selectBlessing(4)"
-     style="width: 100px; height: 100px; border: 1px solid white; display: inline-block; overflow: hidden;">
-  <img src="./Img/blessings/b4.png" alt="Blessing 4"
-       style="width: 100%; height: 100%; object-fit: cover;" />
+        <div id="sqr7" class="card" onclick="selectUnit(9)"
+     onmouseover="showPreview('./Img/units/9.png', event)"
+     onmouseout="hidePreview()">
+  <img src="./Img/units/9.png" alt="Garden of Contracts">
+  <div class="card-label">The Garden of Contracts</div>
 </div>
-    </div>
-    <div class="row">DD
-       <div id="sqr5" onclick="selectUnit(7)" 
-     style="width: 100px; height: 100px; border: 1px solid white; display: inline-block; overflow: hidden;">
-  <img src="./Img/units/7.png" alt="Unit 7" 
-       style="width: 100%; height: 100%; object-fit: cover;" />
+     <div id="sqr8" class="card" onclick="selectUnit(10)"
+      onmouseover="showPreview('./Img/units/10.png', event)"
+     onmouseout="hidePreview()">
+  <img src="./Img/units/10.png" alt="Mirror of Lies">
+  <div class="card-label">The Mirror of Lies</div>
 </div>
-       <div id="sqr6" onclick="selectUnit(8)" 
-     style="width: 100px; height: 100px; border: 1px solid white; display: inline-block; overflow: hidden;">
-  <img src="./Img/units/8.png" alt="Unit 8" 
-       style="width: 100%; height: 100%; object-fit: cover;" />
-</div>
-        <div id="sqr7" onclick="selectUnit(9)" 
-     style="width: 100px; height: 100px; border: 1px solid white; display: inline-block; overflow: hidden;">
-  <img src="./Img/units/9.png" alt="Unit 9" 
-       style="width: 100%; height: 100%; object-fit: cover;" />
-</div>
-        <div id="sqr8" onclick="selectUnit(10)" 
-     style="width: 100px; height: 100px; border: 1px solid white; display: inline-block; overflow: hidden;">
-  <img src="./Img/units/10.png" alt="Unit 10" 
-       style="width: 100%; height: 100%; object-fit: cover;" />
-</div>
-       <div id="sqr9" onclick="selectUnit(11)" 
-     style="width: 100px; height: 100px; border: 1px solid white; display: inline-block; overflow: hidden;">
-  <img src="./Img/units/11.png" alt="Unit 11" 
-       style="width: 100%; height: 100%; object-fit: cover;" />
-</div>
-    </div>
-    <div class="row">Tanks
-        <div id="sqr10" onclick="selectUnit(1)" 
-     style="width: 100px; height: 100px; border: 1px solid white; display: inline-block; overflow: hidden;">
-  <img src="./Img/units/1.png" alt="Unit 1" 
-       style="width: 100%; height: 100%; object-fit: cover;" />
-</div>
-        <div id="sqr11" onclick="selectUnit(2)" 
-     style="width: 100px; height: 100px; border: 1px solid white; display: inline-block; overflow: hidden;">
-  <img src="./Img/units/2.png" alt="Unit 2" 
-       style="width: 100%; height: 100%; object-fit: cover;" />
-</div>
-       <div id="sqr12" onclick="selectUnit(3)" 
-     style="width: 100px; height: 100px; border: 1px solid white; display: inline-block; overflow: hidden;">
-  <img src="./Img/units/3.png" alt="Unit 3" 
-       style="width: 100%; height: 100%; object-fit: cover;" />
+     <div id="sqr9" class="card" onclick="selectUnit(11)"
+    onmouseover="showPreview('./Img/units/11.png', event)"
+     onmouseout="hidePreview()">
+  <img src="./Img/units/11.png" alt="Embrace of Death">
+  <div class="card-label">The Embrace of Death</div>
 </div>
     </div>
-    <div class="row">Supports
-      <div id="sqr13" onclick="selectUnit(4)" 
-       style="width: 100px; height: 100px; border: 1px solid white; display: inline-block; overflow: hidden;">
-      <img src="./Img/units/4.png" alt="Unit 4" 
-       style="width: 100%; height: 100%; object-fit: cover;" />
+   <div class="row">Tanks
+     <div id="sqr10" class="card" onclick="selectUnit(1)"
+     onmouseover="showPreview('./Img/units/1.png', event)"
+     onmouseout="hidePreview()">
+  <img src="./Img/units/1.png" alt="Dance of the Sword">
+  <div class="card-label">The Dance of the Sword</div>
+</div>
+     <div id="sqr11" class="card" onclick="selectUnit(2)"
+      onmouseover="showPreview('./Img/units/2.png', event)"
+     onmouseout="hidePreview()">
+  <img src="./Img/units/2.png" alt="Fighter of Sacrifice">
+  <div class="card-label">The Fighter of Sacrifice</div>
+</div>
+     <div id="sqr12" class="card" onclick="selectUnit(3)"
+      onmouseover="showPreview('./Img/units/3.png', event)"
+     onmouseout="hidePreview()">
+  <img src="./Img/units/3.png" alt="Godfather of Games">
+  <div class="card-label">The Godfather of Games</div>
+</div>
     </div>
-        <div id="sqr14" onclick="selectUnit(5)" 
-     style="width: 100px; height: 100px; border: 1px solid white; display: inline-block; overflow: hidden;">
-  <img src="./Img/units/5.png" alt="Unit 5" 
-       style="width: 100%; height: 100%; object-fit: cover;" />
+    <div class="row" class="subsection-title">Supports
+     <div id="sqr13" class="card" onclick="selectUnit(4)"
+      onmouseover="showPreview('./Img/units/4.png', event)"
+     onmouseout="hidePreview()">
+  <img src="./Img/units/4.png" alt="Bard of the Moon">
+  <div class="card-label">The Bard of the Moon</div>
 </div>
-       <div id="sqr15" onclick="selectUnit(6)" 
-     style="width: 100px; height: 100px; border: 1px solid white; display: inline-block; overflow: hidden;">
-  <img src="./Img/units/6.png" alt="Unit 6" 
-       style="width: 100%; height: 100%; object-fit: cover;" />
+     <div id="sqr14" class="card" onclick="selectUnit(5)"
+     onmouseover="showPreview('./Img/units/5.png', event)"
+     onmouseout="hidePreview()">
+  <img src="./Img/units/5.png" alt="Caregiver of The Family">
+  <div class="card-label">The Caregiver of The Family</div>
 </div>
+     <div id="sqr15" class="card" onclick="selectUnit(6)"
+      onmouseover="showPreview('./Img/units/6.png', event)"
+     onmouseout="hidePreview()">
+  <img src="./Img/units/6.png" alt="Prisoner of Freedom">
+  <div class="card-label">The Prisoner of Freedom</div>
     </div>
     <button id="btn" onclick="Return()">Return</button>
   </div>
 </div>
+
+<img id="zoomPreview" style="
+  display: none;
+  position: absolute;
+  width: 250px;
+  height: auto;
+  border: 3px solid white;
+  z-index: 100;
+  background-color: black;
+  pointer-events: none;
+" />
 
 <script>
   GetTeamState()

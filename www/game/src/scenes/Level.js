@@ -29,19 +29,19 @@ class Level extends Phaser.Scene {
 		const player1_characters = this.add.container(16, -3);
 
 		// unit_4
-		const unit_4 = new UnitPrefab(this, 136, 408);
+		const unit_4 = new UnitPrefab(this, 250, 381);
 		player1_characters.add(unit_4);
 
 		// unit_3
-		const unit_3 = new UnitPrefab(this, 326, 516);
+		const unit_3 = new UnitPrefab(this, 364, 462);
 		player1_characters.add(unit_3);
 
 		// unit_2
-		const unit_2 = new UnitPrefab(this, 326, 327);
+		const unit_2 = new UnitPrefab(this, 364, 300);
 		player1_characters.add(unit_2);
 
 		// unit_1
-		const unit_1 = new UnitPrefab(this, 516, 408);
+		const unit_1 = new UnitPrefab(this, 516, 381);
 		player1_characters.add(unit_1);
 
 		// player1
@@ -53,19 +53,19 @@ class Level extends Phaser.Scene {
 		const player2_characters = this.add.container(-535, 134);
 
 		// unit_5
-		const unit_5 = new UnitPrefab(this, 1257, 271);
+		const unit_5 = new UnitPrefab(this, 1257, 244);
 		player2_characters.add(unit_5);
 
 		// unit_6
-		const unit_6 = new UnitPrefab(this, 1447, 190);
+		const unit_6 = new UnitPrefab(this, 1409, 163);
 		player2_characters.add(unit_6);
 
 		// unit_8
-		const unit_8 = new UnitPrefab(this, 1599, 271);
+		const unit_8 = new UnitPrefab(this, 1523, 244);
 		player2_characters.add(unit_8);
 
 		// unit_7
-		const unit_7 = new UnitPrefab(this, 1447, 379);
+		const unit_7 = new UnitPrefab(this, 1409, 325);
 		player2_characters.add(unit_7);
 
 		// player2
@@ -80,30 +80,37 @@ class Level extends Phaser.Scene {
 
 		// attackInfo
 		const attackInfo = this.add.text(570, 81, "", {});
-		attackInfo.scaleX = 0.7261393773832091;
-		attackInfo.scaleY = 1.379303707157483;
+		attackInfo.scaleX = 0.8;
 		attackInfo.text = "Selected Attacks:";
-		attackInfo.setStyle({ "backgroundColor": "", "fontSize": "20px", "fontStyle": "bold" });
+		attackInfo.setStyle({ "backgroundColor": "#ffffffff", "color": "#eb0202ff", "fontFamily": "Arial", "fontSize": "20px", "fontStyle": "bold", "stroke": "#ffffffff" });
 
 		// attackButton
-		const attackButton = this.add.text(570, 162, "", {});
+		const attackButton = this.add.text(570, 157, "", {});
 		attackButton.scaleX = 0.6184652628838178;
-		attackButton.scaleY = 0.9665653195179874;
+		attackButton.scaleY = 0.8260079474155231;
 		attackButton.text = "Attack!";
-		attackButton.setStyle({ "backgroundColor": "#ff0000", "fontSize": "24px", "fontStyle": "bold" });
+		attackButton.setStyle({ "backgroundColor": "#ff0000", "fontFamily": "Arial", "fontSize": "24px", "fontStyle": "bold" });
 		attackButton.setPadding({"left":10,"top":5,"right":10,"bottom":5});
 
 		// player1_user
 		const player1_user = this.add.text(38, 27, "", {});
 		player1_user.scaleY = 2;
 		player1_user.text = "P1\n";
-		player1_user.setStyle({ "fontStyle": "bold" });
+		player1_user.setStyle({ "fontFamily": "Arial", "fontStyle": "bold" });
 
 		// player2_user
 		const player2_user = this.add.text(1070, 27, "", {});
 		player2_user.scaleY = 2;
 		player2_user.text = "P2\n";
-		player2_user.setStyle({ "fontStyle": "bold" });
+		player2_user.setStyle({ "fontFamily": "Arial", "fontStyle": "bold" });
+
+		// clearButton
+		const clearButton = this.add.text(630, 157, "", {});
+		clearButton.scaleX = 0.6184652628838178;
+		clearButton.scaleY = 0.8260079474155231;
+		clearButton.text = "Clear!";
+		clearButton.setStyle({ "backgroundColor": "#cca838ff", "fontFamily": "Arial", "fontSize": "24px", "fontStyle": "bold" });
+		clearButton.setPadding({"left":10,"top":5,"right":10,"bottom":5});
 
 		// unit_4 (prefab fields)
 		unit_4.unitID = 4;
@@ -147,6 +154,7 @@ class Level extends Phaser.Scene {
 		this.attackButton = attackButton;
 		this.player1_user = player1_user;
 		this.player2_user = player2_user;
+		this.clearButton = clearButton;
 
 		this.events.emit("scene-awake");
 	}
@@ -187,6 +195,8 @@ class Level extends Phaser.Scene {
 	player1_user;
 	/** @type {Phaser.GameObjects.Text} */
 	player2_user;
+	/** @type {Phaser.GameObjects.Text} */
+	clearButton;
 
 	/* START-USER-CODE */
 
@@ -195,6 +205,8 @@ class Level extends Phaser.Scene {
 	create() {
 
 		this.editorCreate();
+
+		this.sound.play('arena_music', {loop: true, volume: 0.5})
 
 		this.GetMatchState()
     	setInterval(() => {
@@ -248,6 +260,13 @@ class Level extends Phaser.Scene {
         });
 
         this.attackButton.setVisible(false);
+
+		this.clearButton.setInteractive();
+        this.clearButton.on("pointerdown", () => {
+	    this.ClearSelections();
+        });
+
+		this.clearButton.setVisible(false);
 	}
 
 UnitClick(unitNumber) {
@@ -336,19 +355,34 @@ UpdateMatchUI(gameState) {
 		var characterSprite = container.list[0]
 		var characterText = container.list[1]
 
-	 const animKey = `Unit_${unit.unit_id}_Idle`;
-     if (this.anims.exists(animKey)) {
-		characterSprite.play(animKey);
+	 	let animKey = "";
+		if (unit.curr_unit_hp <= 0) {
+			animKey = `Unit_${unit.unit_id}_dead`;
+		} else if (container.prevHP && unit.curr_unit_hp < container.prevHP) {
+			animKey = `Unit_${unit.unit_id}_hurt`;
+		} else if (container.wasJustAttacked) {
+			animKey = `Unit_${unit.unit_id}_attack`;
+		} else {
+			animKey = `Unit_${unit.unit_id}_idle`;
+		}
+
+		if (this.anims.exists(animKey)) {
+			characterSprite.play(animKey);
+			characterSprite.setScale(2);
      } else {
 		console.warn(`Missing animation for unit_id=${unit.unit_id}:`, animKey);
 		characterSprite.setTexture("dino"); 
+		characterSprite.setScale(1);
   	}
 
 		container["hp"].text = "HP: " + unit.curr_unit_hp;
 		container["atk"].text = "ATK: " + unit.curr_unit_atk;
-		container.setVisible(unit.curr_unit_hp > 0);
+		container["name"].text = unit.unit_name;
+		container.setVisible(unit.curr_unit_hp >= 0);
 		container.isPlayerUnit = unit.player_unit;
 		container.player_unit_id = unit.player_unit_id;
+		container.prevHP = unit.curr_unit_hp;
+		container.wasJustAttacked = false;
 	});
 
 	gameState.player_units.player2.forEach((unit, index) => {
@@ -357,9 +391,20 @@ UpdateMatchUI(gameState) {
 		var characterSprite = container.list[0]
 		var characterText = container.list[1]
 
-	  const animKey = `Unit_${unit.unit_id}_Idle`;
-      if (this.anims.exists(animKey)) {
-	  characterSprite.play(animKey);
+	 	let animKey = "";
+		if (unit.curr_unit_hp <= 0) {
+			animKey = `Unit_${unit.unit_id}_dead`;
+		} else if (container.prevHP && unit.curr_unit_hp < container.prevHP) {
+			animKey = `Unit_${unit.unit_id}_hurt`;
+		} else if (container.wasJustAttacked) {
+			animKey = `Unit_${unit.unit_id}_attack`;
+		} else {
+			animKey = `Unit_${unit.unit_id}_idle`;
+		}
+
+		if (this.anims.exists(animKey)) {
+			characterSprite.play(animKey);
+			characterSprite.setScale(-2, 2);
       } else {
 	  console.warn(`Missing animation for unit_id=${unit.unit_id}:`, animKey);
 	  characterSprite.setTexture("dino"); 
@@ -367,9 +412,12 @@ UpdateMatchUI(gameState) {
 
 		container["hp"].text = "HP: " + unit.curr_unit_hp;
 		container["atk"].text = "ATK: " + unit.curr_unit_atk;
-		container.setVisible(unit.curr_unit_hp > 0);
+		container["name"].text = unit.unit_name;
+		container.setVisible(unit.curr_unit_hp >= 0);
 		container.isPlayerUnit = unit.player_unit;
 		container.player_unit_id = unit.player_unit_id;
+		container.prevHP = unit.curr_unit_hp;
+		container.wasJustAttacked = false;
 	});
 
 	if (gameState.game_state === 1) {
@@ -421,19 +469,81 @@ Attack(unitId, targetId) {
 	selectedUnit = null;
 }
 
-    UpdateAttackDisplay() {
+  UpdateAttackDisplay() {
 	let text = "Selected Attacks:\n";
+
 	this.attackingUnits.forEach(entry => {
-		text += `${entry.unit_id} → ${entry.target_id}\n`;
+		let attackerName = "Unknown";
+		let targetName = "Unknown";
+
+		// Search in both teams
+		const allUnits = [
+			...this.currentMatchState.player_units.player1,
+			...this.currentMatchState.player_units.player2
+		];
+
+		const attacker = allUnits.find(u => u.player_unit_id === entry.unit_id);
+		const target = allUnits.find(u => u.player_unit_id === entry.target_id);
+
+		if (attacker) attackerName = attacker.unit_name;
+		if (target) targetName = target.unit_name;
+
+		text += `${attackerName} → ${targetName}\n`;
 	});
+
 	this.attackInfo.setText(text);
 
 	if (this.attackingUnits.length >= 1) {
 		this.attackButton.setVisible(true);
+		this.clearButton.setVisible(true);
 	}
 }
 
+ClearSelections() {
+	this.attackingUnits = [];
+	this.targetUnits = [];
+
+	// Clear selected units for player 1 units
+	for (let container of this.player1_characters.list) {
+		if (container && container.list && container.list[0]) {
+	       container.list[0].clearTint();
+         }
+	}
+
+	// Clear selected units for player 2 units
+	for (let container of this.player2_characters.list) {
+		if (container && container.list && container.list[0]) {
+	    container.list[0].clearTint();
+        }
+	}
+
+	selectedUnit = null;
+	selectedTarget = null;
+
+	// Clear and hide buttons
+	if (this.attackInfo) {
+		this.attackInfo.setText("");
+	}
+
+	this.attackButton.setVisible(false);
+	this.clearButton.setVisible(false);
+}
+
     SendAttack() {
+         
+	for (let entry of this.attackingUnits) {
+	for (let container of this.player1_characters.list) {
+		if (container && container.player_unit_id === entry.unit_id) {
+			container.wasJustAttacked = true;
+		}
+	}
+	for (let container of this.player2_characters.list) {
+		if (container && container.player_unit_id === entry.unit_id) {
+		container.wasJustAttacked = true;
+	    }
+	  }
+    }
+
 	const request = new XMLHttpRequest();
 	request.onreadystatechange = () => {
 		if (request.readyState == 4) {

@@ -284,11 +284,18 @@ app.post("/searchMatch", (req, res) => {
                                         console.log("Error resetting player units: ", err);
                                         return;
                                     }
+
+                                    console.log("Player unit " + unit.player_unit_id + " reset to default values.");                            
                                 }
                             )
                         }
                     )
                 })
+
+                // Call the function after 3 seconds to apply blessing effects
+                setTimeout(() => {
+                    applyBlessingEffects(playerID);
+                }, 3000);
             }
         )
     }
@@ -312,7 +319,6 @@ app.post("/searchMatch", (req, res) => {
 
                             ResetPlayerUnits(req.session.playerID);
                             ResetPlayerUnits(rows[0].game_ply1_id);
-
                             res.json({ message: "Match found!" });
                         }
                     );
@@ -324,6 +330,7 @@ app.post("/searchMatch", (req, res) => {
                                 res.send(err);
                                 return;
                             }
+
                             res.json({ message: "Match created!" });
                         }
                     );
@@ -529,28 +536,32 @@ app.get("/getMatchState", (req, res) => {
 
 			const gameState = gameRows[0];
 
-			connection.query("SELECT * FROM player_unit WHERE player_id = ? OR player_id = ?", [gameState.game_ply1_id, gameState.game_ply2_id], (err, unitRows) => {
-				if (err) {
-					res.status(500).json({ message: err });
-					return;
-				}
+		connection.query(`SELECT pu.*, u.unit_name FROM player_unit pu JOIN unit u ON pu.unit_id = u.unit_id WHERE pu.player_id = ? OR pu.player_id = ?`,[gameState.game_ply1_id, gameState.game_ply2_id],
+        (err, unitRows) => {
+        if (err) {
+        res.status(500).json({ message: err });
+        return;
+        }
 
-				const playerUnits = {
-					player1: [],
-					player2: []
-				};
+        const playerUnits = {
+        player1: [],
+        player2: []
+        };
 
-				unitRows.forEach(unit => {
-					playerUnits[unit.player_id === gameState.game_ply1_id ? 'player1' : 'player2'].push({
-						unit_id: unit.unit_id,
-						curr_unit_hp: unit.curr_unit_hp,
-						curr_unit_atk: unit.curr_unit_atk,
-						curr_unit_heal: unit.curr_unit_heal,
-						slot_id: unit.slot_id,
-						player_unit_id: unit.player_unit_id,
-						player_unit: (unit.player_id === req.session.playerID)
-					});
-				});
+       unitRows.forEach(unit => {
+       const side = unit.player_id === gameState.game_ply1_id ? 'player1' : 'player2';
+
+        playerUnits[side].push({
+          unit_id: unit.unit_id,
+          curr_unit_hp: unit.curr_unit_hp,
+          curr_unit_atk: unit.curr_unit_atk,
+          curr_unit_heal: unit.curr_unit_heal,
+          slot_id: unit.slot_id,
+          player_unit_id: unit.player_unit_id,
+          unit_name: unit.unit_name, // ← added from the unit table
+          player_unit: (unit.player_id === req.session.playerID)
+        });
+      });
 
 				const currentTurn = gameState.game_turn === 1 ? "Player 1" : "Player 2";
 
@@ -563,6 +574,7 @@ app.get("/getMatchState", (req, res) => {
 						winner_id: gameState.game_winner,
 						loser_id: gameState.game_loser,
 						player_id: req.session.playerID
+
 					}
 				});
 			});
@@ -723,7 +735,7 @@ app.put("/attack", (req, res) => {
 
     function BuffAllAlliesHP(player_id, amount) {
         connection.query(
-            "UPDATE player_unit SET curr_unit_hp = curr_unit_hp + ? WHERE player_id = ?",
+            "UPDATE player_unit SET curr_unit_hp = curr_unit_hp + ? WHERE player_id = ? AND curr_unit_hp > 0",
             [amount, player_id],
             (err) => {
                 if (err) {
@@ -908,39 +920,39 @@ app.put("/attack", (req, res) => {
 
                     }
 
-                    else if (attacker.unit_id == 12) {
+                    else if (attacker.unit_id == 11) {
                         console.log(` Ability triggered: Unit ${attacker.player_unit_id} loses 2 HP and gains +2 ATK`);
                         ApplyRecklessBuff(attackattacker.player_unit_id, 2);
                    }
     
-                    else if (attacker.unit_id == 2 ) {
+                    else if (attacker.unit_id == 3 ) {
                         BuffAllAlliesHP(attacker.player_id, 2);
                     }
 
-                    else if (attacker.unit_id == 11) {
+                    else if (attacker.unit_id == 10) {
                         ExecuteAttack(attacker, target_id)
                     }
 
-                    else if (attacker.unit_id == 12  && attacker.curr_unit_hp<30) {
+                    else if (attacker.unit_id == 2  && attacker.curr_unit_hp<30) {
                          SurvivalInstict(attacker.player_unit_id, 5)
 
                      }
 
-                     else if (attacker.unit_id == 10){
+                     else if (attacker.unit_id == 9){
                         DamageAllEnemies(attacker.player_id, 2)
 
                      }
 
-                    else if (attacker.unit_id == 12) {
+                    else if (attacker.unit_id == 8) {
                         SelfDestruct(attacker.player_unit_id, 1);
                     }
 
-                    else if (attacker.unit_id == 5) {
+                    else if (attacker.unit_id == 6) {
                         DebuffATK(target_id, 3)
                     }
 
 
-                    else if (attacker.unit_id == 9) {
+                    else if (attacker.unit_id == 7) {
                         const extra = Math.floor(Math.random() * 11);
                         ExtraDamage(target_id, extra); 
                     }
@@ -964,8 +976,7 @@ app.put("/attack", (req, res) => {
    function MakeDamage(attacker_unit_id, defender_unit_id, target_id, damage) {
     // Step 1: Get attacker's unit_type_id
     connection.query(
-        `SELECT u.unit_type_id FROM player_unit pu JOIN unit u ON pu.unit_id = u.unit_id WHERE pu.player_unit_id = ?`,
-        [attacker_unit_id],
+        `SELECT u.unit_type_id FROM player_unit pu JOIN unit u ON pu.unit_id = u.unit_id WHERE pu.player_unit_id = ?`,[attacker_unit_id],
         (err, attackerResults) => {
             if (err || attackerResults.length === 0) {
                 console.log("Error fetching attacker's unit_type_id:", err);
@@ -1000,10 +1011,7 @@ app.put("/attack", (req, res) => {
 
                     // Step 4: Check for tank unit
                     connection.query(
-                        `SELECT pu.player_unit_id FROM player_unit pu 
-                         JOIN unit u ON pu.unit_id = u.unit_id 
-                         WHERE pu.player_id = ? AND u.unit_type_id = 1 AND pu.curr_unit_hp > 0 LIMIT 1`,
-                        [playerId],
+                        `SELECT pu.player_unit_id FROM player_unit pu JOIN unit u ON pu.unit_id = u.unit_id WHERE pu.player_id = ? AND u.unit_type_id = 1 AND pu.curr_unit_hp > 0 LIMIT 1`, [playerId],
                         (err3, results2) => {
                             if (err3) {
                                 console.log("Error checking for defender units:", err3);
@@ -1136,6 +1144,79 @@ app.get("/gameOver", (req, res) => {
 
     GetPlayerIDS()
 })
+
+function applyBlessingEffects(playerId) {
+    console.log("Grabbing blessing for playerId --> " + playerId)
+
+    connection.query("SELECT * FROM player_blessing WHERE player_id = ?", [playerId],
+        function (err, rows, fields) {
+            if (err) {
+                console.log("Error fetching blessing for playerId:", err);
+                return;
+            }
+
+            if (rows.length === 0){
+                console.log("No blessing found for playerId:", playerId);
+                return;
+            }
+
+            useBlessing(playerId, rows[0].blessing_id);
+        }
+    )
+
+ function useBlessing(playerId, blessingId){
+        console.log("Applying blessing with ID " + blessingId + " for playerId " + playerId);
+        connection.query("SET SQL_SAFE_UPDATES = 0")
+
+        if (blessingId == 1) {
+                // connection.query("UPDATE player_unit SET curr_unit_hp = curr_unit_hp + 10 WHERE player_id = ?", [playerId],
+                connection.query("UPDATE player_unit SET curr_unit_hp = curr_unit_hp + (SELECT blessing_hp FROM blessing WHERE blessing_id = 1) WHERE player_id = ?", [playerId],
+                    function (err, rows, fields) {
+                        if (err) {
+                            console.log("Error applying Wrath of War:", err);
+                            return;
+                        }
+
+                        console.log(`All units of player ${playerId} gained 5 HP from Wrath of War. Rows affected: ${rows.affectedRows}`);
+                    }
+                        
+                );
+            } else if (blessingId == 2) {
+                connection.query("UPDATE player_unit SET curr_unit_heal = curr_unit_heal + (SELECT blessing_heal FROM blessing WHERE blessing_id = 2) WHERE player_id = ?",[playerId],
+                    (err) => {
+                        if (err) {
+                            console.log("Error applying Waters of Life:", err);
+                        } else {
+                            console.log(`All units of player ${playerId} gained 2 healing from Waters of Life.`);
+                        }
+                    }
+                );
+            } else if (blessingId == 3) {
+                connection.query("UPDATE player_unit SET curr_unit_atk = curr_unit_atk + (SELECT blessing_atk FROM blessing WHERE blessing_id = 3) WHERE player_id = ?",[playerId],
+                    (err) => {
+                        if (err) {
+                            console.log("Error applying Dance of the Blades:", err);
+                        } else {
+                            console.log(`All units of player ${playerId} gained 2 ATK from Dance of the Blades.`);
+                        }
+                    }
+                );
+            } else if (blessingId == 4) {
+                connection.query("UPDATE player_unit SET curr_unit_hp = curr_unit_hp + (SELECT blessing_hp FROM blessing WHERE blessing_id = 4), curr_unit_atk = curr_unit_atk + (SELECT blessing_atk FROM blessing WHERE blessing_id = 4), curr_unit_heal = curr_unit_heal + (SELECT blessing_heal FROM blessing WHERE blessing_id = 4) WHERE player_id = ?",[playerId],
+                    (err) => {
+                        if (err) {
+                            console.log("Error applying Sides of the Moon:", err);
+                        } else {
+                            console.log(`All units of player ${playerId} gained 1 HP, 1 ATK, and 1 healing from Sides of the Moon.`);
+                        }
+                    }
+                );
+            } else {
+                console.log("Invalid blessing ID");
+            }
+            connection.query("SET SQL_SAFE_UPDATES = 1")
+    }
+}
 
 // Run the server
 app.listen(serverPort, () => {

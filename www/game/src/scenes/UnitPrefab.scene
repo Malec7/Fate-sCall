@@ -34,24 +34,51 @@
                     "unlock": [
                         "x",
                         "y",
-                        "fontFamily"
+                        "fontFamily",
+                        "backgroundColor",
+                        "scaleX",
+                        "scaleY",
+                        "fontSize"
                     ],
                     "label": "hp",
                     "scope": "PUBLIC",
-                    "x": -1,
-                    "y": 37,
-                    "fontFamily": "Arial"
+                    "x": -8,
+                    "y": 96,
+                    "scaleX": 0.8,
+                    "scaleY": 0.8,
+                    "fontFamily": "Arial",
+                    "fontSize": "20px",
+                    "backgroundColor": "#30b43fff"
                 },
                 {
                     "type": "Text",
                     "id": "6bb1f578-8de9-4a68-8857-de194becea3a",
                     "label": "atk",
                     "scope": "PUBLIC",
-                    "x": -21,
-                    "y": 56,
+                    "x": -35,
+                    "y": 106,
+                    "scaleX": 0.8,
+                    "scaleY": 0.8,
                     "text": "ATK: ",
-                    "fontSize": "25px",
-                    "color": "#ff9900"
+                    "fontFamily": "Arial",
+                    "fontSize": "20px",
+                    "color": "#ffffffff",
+                    "backgroundColor": "#b9152aff"
+                },
+                {
+                    "type": "Text",
+                    "id": "de35d151-0556-4080-aa46-b28fb9fed9e9",
+                    "label": "name",
+                    "scope": "PUBLIC",
+                    "x": -82,
+                    "y": 123,
+                    "scaleX": 0.8,
+                    "scaleY": 0.8,
+                    "text": "Name",
+                    "fontFamily": "Arial",
+                    "fontSize": "18px",
+                    "fontStyle": "bold",
+                    "backgroundColor": "#000000ff"
                 }
             ]
         }

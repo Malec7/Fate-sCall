@@ -44,8 +44,8 @@
                     "label": "unit_4",
                     "scope": "PUBLIC",
                     "unitID": 4,
-                    "x": 136,
-                    "y": 408
+                    "x": 250,
+                    "y": 381
                 },
                 {
                     "prefabId": "1a05a1cc-c62f-46c3-b16c-707c36849384",
@@ -58,8 +58,8 @@
                     "label": "unit_3",
                     "scope": "PUBLIC",
                     "unitID": 3,
-                    "x": 326,
-                    "y": 516
+                    "x": 364,
+                    "y": 462
                 },
                 {
                     "prefabId": "1a05a1cc-c62f-46c3-b16c-707c36849384",
@@ -72,8 +72,8 @@
                     "label": "unit_2",
                     "scope": "PUBLIC",
                     "unitID": 2,
-                    "x": 326,
-                    "y": 327
+                    "x": 364,
+                    "y": 300
                 },
                 {
                     "prefabId": "1a05a1cc-c62f-46c3-b16c-707c36849384",
@@ -87,7 +87,7 @@
                     "scope": "PUBLIC",
                     "unitID": 1,
                     "x": 516,
-                    "y": 408
+                    "y": 381
                 },
                 {
                     "type": "Text",
@@ -121,7 +121,7 @@
                     "scope": "PUBLIC",
                     "unitID": 5,
                     "x": 1257,
-                    "y": 271
+                    "y": 244
                 },
                 {
                     "prefabId": "1a05a1cc-c62f-46c3-b16c-707c36849384",
@@ -134,8 +134,8 @@
                     "label": "unit_6",
                     "scope": "PUBLIC",
                     "unitID": 6,
-                    "x": 1447,
-                    "y": 190
+                    "x": 1409,
+                    "y": 163
                 },
                 {
                     "prefabId": "1a05a1cc-c62f-46c3-b16c-707c36849384",
@@ -148,8 +148,8 @@
                     "label": "unit_8",
                     "scope": "PUBLIC",
                     "unitID": 8,
-                    "x": 1599,
-                    "y": 271
+                    "x": 1523,
+                    "y": 244
                 },
                 {
                     "prefabId": "1a05a1cc-c62f-46c3-b16c-707c36849384",
@@ -162,8 +162,8 @@
                     "label": "unit_7",
                     "scope": "PUBLIC",
                     "unitID": 7,
-                    "x": 1447,
-                    "y": 379
+                    "x": 1409,
+                    "y": 325
                 },
                 {
                     "type": "Text",
@@ -195,12 +195,14 @@
             "scope": "PUBLIC",
             "x": 570,
             "y": 81,
-            "scaleX": 0.7261393773832091,
-            "scaleY": 1.379303707157483,
+            "scaleX": 0.8,
             "text": "Selected Attacks:",
+            "fontFamily": "Arial",
             "fontSize": "20px",
             "fontStyle": "bold",
-            "backgroundColor": ""
+            "color": "#eb0202ff",
+            "stroke": "#ffffffff",
+            "backgroundColor": "#ffffffff"
         },
         {
             "type": "Text",
@@ -208,14 +210,15 @@
             "label": "attackButton",
             "scope": "PUBLIC",
             "x": 570,
-            "y": 162,
+            "y": 157,
             "scaleX": 0.6184652628838178,
-            "scaleY": 0.9665653195179874,
+            "scaleY": 0.8260079474155231,
             "text": "Attack!",
             "paddingLeft": 10,
             "paddingTop": 5,
             "paddingRight": 10,
             "paddingBottom": 5,
+            "fontFamily": "Arial",
             "fontSize": "24px",
             "fontStyle": "bold",
             "backgroundColor": "#ff0000"
@@ -229,6 +232,7 @@
             "y": 27,
             "scaleY": 2,
             "text": "P1\n",
+            "fontFamily": "Arial",
             "fontStyle": "bold"
         },
         {
@@ -240,7 +244,27 @@
             "y": 27,
             "scaleY": 2,
             "text": "P2\n",
+            "fontFamily": "Arial",
             "fontStyle": "bold"
+        },
+        {
+            "type": "Text",
+            "id": "1fbfa2eb-3016-450a-84e1-f95badfd6db2",
+            "label": "clearButton",
+            "scope": "PUBLIC",
+            "x": 630,
+            "y": 157,
+            "scaleX": 0.6184652628838178,
+            "scaleY": 0.8260079474155231,
+            "text": "Clear!",
+            "paddingLeft": 10,
+            "paddingTop": 5,
+            "paddingRight": 10,
+            "paddingBottom": 5,
+            "fontFamily": "Arial",
+            "fontSize": "24px",
+            "fontStyle": "bold",
+            "backgroundColor": "#cca838ff"
         }
     ],
     "plainObjects": [],

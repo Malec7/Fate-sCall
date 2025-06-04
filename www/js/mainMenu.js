@@ -34,6 +34,7 @@ function CheckMatchState(){
 }
 
 function GetCurrentTeam() {
+   playClickSound();
   console.log("Get current team!");
   var request = new XMLHttpRequest();
 
@@ -47,10 +48,10 @@ function GetCurrentTeam() {
           console.log(slotID);
             const element = document.getElementById(slotID);
             console.log(element)
-            element.innerHTML =`<img src="./Img/units/${unit.unit_id}.png" alt="${unit.unit_name}"  style="width: 100%; height: 100%; object-fit: cover;" />`;
+            element.innerHTML =`<img src="./Img/units/${unit.unit_id}.png" alt="${unit.unit_name}"  style="width: 150%; height: 220%; object-fit: cover;" />`;
         });
 
-        document.getElementById("bigsqr").innerHTML = `<img src="./Img/blessings/b${data.blessing.blessing_id}.png" alt="${data.blessing.blessing_name}"style="width: 100%; height: 100%; object-fit: cover;" />`;
+        document.getElementById("bigsqr").innerHTML = `<img src="./Img/blessings/b${data.blessing.blessing_id}.png" alt="${data.blessing.blessing_name}"style="width: 150%; height: 220%; object-fit: cover;" />`;
     }
   };
 
@@ -59,6 +60,7 @@ function GetCurrentTeam() {
 }
 
 function SearchMatch() {
+   playClickSound();
   console.log("Search match!");
 
   var request = new XMLHttpRequest();
@@ -78,6 +80,7 @@ function SearchMatch() {
 }
 
 function QuitSearch() {
+   playClickSound();
   console.log("Quit search!");
 
   var request = new XMLHttpRequest();
@@ -97,6 +100,7 @@ function QuitSearch() {
 }
 
 function TeamSelectPage() {
+  playClickSound();
 
   var request = new XMLHttpRequest();
 
@@ -115,4 +119,12 @@ function TeamSelectPage() {
   request.open("POST", "/teamSelectPage", true);
 
   request.send();
+}
+
+function playClickSound() {
+  const sound = document.getElementById("clickSound");
+  if (sound) {
+    sound.currentTime = 0; 
+    sound.play();
+  }
 }
