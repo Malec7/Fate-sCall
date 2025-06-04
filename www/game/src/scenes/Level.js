@@ -29,19 +29,19 @@ class Level extends Phaser.Scene {
 		const player1_characters = this.add.container(16, -3);
 
 		// unit_4
-		const unit_4 = new UnitPrefab(this, 250, 381);
+		const unit_4 = new UnitPrefab(this, 516, 381);
 		player1_characters.add(unit_4);
 
 		// unit_3
-		const unit_3 = new UnitPrefab(this, 364, 462);
+		const unit_3 = new UnitPrefab(this, 364, 300);
 		player1_characters.add(unit_3);
 
 		// unit_2
-		const unit_2 = new UnitPrefab(this, 364, 300);
+		const unit_2 = new UnitPrefab(this, 364, 462);
 		player1_characters.add(unit_2);
 
 		// unit_1
-		const unit_1 = new UnitPrefab(this, 516, 381);
+		const unit_1 = new UnitPrefab(this, 250, 381);
 		player1_characters.add(unit_1);
 
 		// player1
@@ -61,11 +61,11 @@ class Level extends Phaser.Scene {
 		player2_characters.add(unit_6);
 
 		// unit_8
-		const unit_8 = new UnitPrefab(this, 1523, 244);
+		const unit_8 = new UnitPrefab(this, 1409, 325);
 		player2_characters.add(unit_8);
 
 		// unit_7
-		const unit_7 = new UnitPrefab(this, 1409, 325);
+		const unit_7 = new UnitPrefab(this, 1523, 244);
 		player2_characters.add(unit_7);
 
 		// player2
@@ -530,7 +530,7 @@ ClearSelections() {
 }
 
     SendAttack() {
-         
+
 	for (let entry of this.attackingUnits) {
 	for (let container of this.player1_characters.list) {
 		if (container && container.player_unit_id === entry.unit_id) {

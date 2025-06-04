@@ -3,10 +3,9 @@ function CheckMatchState(){
 
   request.onreadystatechange = function () {
     if (this.readyState == 4) {
-      var data = JSON.parse(this.responseText); // Adiciona o parse da resposta
+      var data = JSON.parse(this.responseText); 
       console.log(data)
       if (this.status == 401) {
-          // If status is 401 , show a message and a link to the login page
           window.location.href = "/login.html";
           return;
       } 
@@ -17,7 +16,7 @@ function CheckMatchState(){
           document.getElementById("username").innerHTML = "username: " + data.username
           document.getElementById("history").innerHTML = "match history: " + data.history
       }else if (data.state == "WAITING_MATCH"){
-          // decide what to when the player is already waiting for a match. Maybe show a button to quit???
+          // decide what to when the player is already waiting for a match
           document.getElementById("searchingMatch").style.display = "block";
           document.getElementById("btn1").style.display = "none";
           document.getElementById("btn3").style.display = "block";
@@ -69,9 +68,9 @@ function SearchMatch() {
     if (this.readyState == 4) {
         var data = JSON.parse(this.responseText);
         console.log(data);
-        // if (data.message) {
-        //   alert(data.message);
-        // }
+         if (data.message) {
+           alert(data.message);
+         }
     }
   };
   
