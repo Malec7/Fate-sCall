@@ -378,7 +378,7 @@ UpdateMatchUI(gameState) {
 		container["hp"].text = "HP: " + unit.curr_unit_hp;
 		container["atk"].text = "ATK: " + unit.curr_unit_atk;
 		container["name"].text = unit.unit_name;
-		container.setVisible(unit.curr_unit_hp >= 0);
+		container.setVisible(unit.curr_unit_hp > 0);
 		container.isPlayerUnit = unit.player_unit;
 		container.player_unit_id = unit.player_unit_id;
 		container.prevHP = unit.curr_unit_hp;
@@ -413,7 +413,7 @@ UpdateMatchUI(gameState) {
 		container["hp"].text = "HP: " + unit.curr_unit_hp;
 		container["atk"].text = "ATK: " + unit.curr_unit_atk;
 		container["name"].text = unit.unit_name;
-		container.setVisible(unit.curr_unit_hp >= 0);
+		container.setVisible(unit.curr_unit_hp > 0);
 		container.isPlayerUnit = unit.player_unit;
 		container.player_unit_id = unit.player_unit_id;
 		container.prevHP = unit.curr_unit_hp;

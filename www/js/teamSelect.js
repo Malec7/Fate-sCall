@@ -47,28 +47,7 @@ function selectBlessing(blessingId){
 
             const blessingName = data.blessing_name
             document.getElementById("bigsqr").innerHTML = `<img src="./Img/blessings/b${blessingId}.png"alt="${blessingName}"style="width: 80%; height: 100%; object-fit: cover;" />`;
-            // if (this.status == 200) {
-            //     var unitData = JSON.parse(this.responseText);
-            //     var unitName = unitData.unit_name;
-            //     var blessingData = JSON.parse(this.responseText);
-            //     var blessingName = blessingData.blessing_name;
-
-            //     if (document.getElementById("sqr18").value === "") {
-            //         document.getElementById("sqr18").value = unitName;
-            //     } else if (document.getElementById("sqr16").value === "") {
-            //         document.getElementById("sqr16").value = unitName;
-            //     } else if (document.getElementById("sqr19").value === "") {
-            //         document.getElementById("sqr19").value = unitName;
-            //     } else if (document.getElementById("sqr17").value === "") {
-            //         document.getElementById("sqr17").value = unitName;
-            //     } else if (document.getElementById("bigsqr").value === "") {
-            //         document.getElementById("bigsqr").value = blessingName;
-            //     } else {
-            //         alert("All slots are filled!");
-            //     }
-            // } else {
-            //     console.error("Error getting units/blessing details:", this.statusText);
-            // }
+    
         }
     };
 

@@ -428,7 +428,7 @@ app.get("/slot/:slotId/setUnit/:unitId/", (req, res) => {
 
     console.log("Set unit " + unitId + " on slot " + slotId + " for player " + req.session.playerID);
 
-    // connection.query("SELECT * FROM unit WHERE unit_id = ?", [unitId], (err, rows) => {
+
     connection.query("SELECT unit_type_id FROM unit WHERE unit_id = ?", [unitId], (err, unitRows) => {
         if (err) {
             return res.status(500).json({ message: err });
@@ -456,7 +456,7 @@ app.get("/slot/:slotId/setUnit/:unitId/", (req, res) => {
                    console.log(err);
                }
                console.log("Affected rows: ", rows.affectedRows);
-               res.status(200).json(unitRows[0]); // Ensure unitRows[0] includes unit_name
+               res.status(200).json(unitRows[0]); 
            });
        });
     });
@@ -558,7 +558,7 @@ app.get("/getMatchState", (req, res) => {
           curr_unit_heal: unit.curr_unit_heal,
           slot_id: unit.slot_id,
           player_unit_id: unit.player_unit_id,
-          unit_name: unit.unit_name, // ← added from the unit table
+          unit_name: unit.unit_name, 
           player_unit: (unit.player_id === req.session.playerID)
         });
       });
@@ -730,9 +730,6 @@ app.put("/attack", (req, res) => {
 }
 
 
-
-    
-
     function BuffAllAlliesHP(player_id, amount) {
         connection.query(
             "UPDATE player_unit SET curr_unit_hp = curr_unit_hp + ? WHERE player_id = ? AND curr_unit_hp > 0",
@@ -753,7 +750,7 @@ app.put("/attack", (req, res) => {
     
  function DamageAllEnemies(attacker_player_id, amount) {
     console.log(`DamageAllEnemies called with attacker_player_id: ${attacker_player_id}, amount: ${amount}`);
-    // Step 1: Find the enemy player ID (assuming 2-player game)
+    
     connection.query(
         `SELECT game_ply1_id, game_ply2_id FROM game_state WHERE game_ply1_id = ? OR game_ply2_id = ? LIMIT 1`,
         [attacker_player_id, attacker_player_id],
@@ -766,7 +763,7 @@ app.put("/attack", (req, res) => {
             const game = result[0];
             const enemy_player_id = game.game_ply1_id === attacker_player_id ? game.game_ply2_id : game.game_ply1_id;
 
-            // Step 2: Damage all enemy units (only those with HP > 0)
+            //  Damage all enemy units (only those with HP > 0)
             connection.query(`UPDATE player_unit SET curr_unit_hp = GREATEST(curr_unit_hp - ?, 0) WHERE player_id = ? AND curr_unit_hp > 0`,
                 [amount, enemy_player_id],
                 (err2) => {
@@ -974,7 +971,7 @@ app.put("/attack", (req, res) => {
     }
 
    function MakeDamage(attacker_unit_id, defender_unit_id, target_id, damage) {
-    // Step 1: Get attacker's unit_type_id
+    // Get attacker's unit_type_id
     connection.query(
         `SELECT u.unit_type_id FROM player_unit pu JOIN unit u ON pu.unit_id = u.unit_id WHERE pu.player_unit_id = ?`,[attacker_unit_id],
         (err, attackerResults) => {
@@ -985,7 +982,7 @@ app.put("/attack", (req, res) => {
 
             const unit_type_id = attackerResults[0].unit_type_id;
 
-            // Step 2: Apply crit chance if unit_type_id === 3
+            // Apply crit chance 
             if (unit_type_id === 3) {
                 const roll = Math.random(); 
                  console.log(`Crit roll: ${roll}`);
@@ -997,7 +994,7 @@ app.put("/attack", (req, res) => {
                 }
             }
 
-            // Step 3: Get defender's player_id
+       
             connection.query(
                 `SELECT pu.player_id FROM player_unit pu WHERE pu.player_unit_id = ?`,
                 [defender_unit_id],
@@ -1009,7 +1006,7 @@ app.put("/attack", (req, res) => {
 
                     const playerId = results[0].player_id;
 
-                    // Step 4: Check for tank unit
+                    //  Check for tank unit
                     connection.query(
                         `SELECT pu.player_unit_id FROM player_unit pu JOIN unit u ON pu.unit_id = u.unit_id WHERE pu.player_id = ? AND u.unit_type_id = 1 AND pu.curr_unit_hp > 0 LIMIT 1`, [playerId],
                         (err3, results2) => {
@@ -1023,7 +1020,7 @@ app.put("/attack", (req, res) => {
                                 console.log(` Tank present — damage reduced to ${damage}`);
                             }
 
-                            // Step 5: Apply final damage
+                            //  Apply final damage
                             connection.query(
                                 "UPDATE player_unit SET curr_unit_hp = GREATEST(curr_unit_hp - ?, 0) WHERE player_unit_id = ?",
                                 [damage, defender_unit_id],
